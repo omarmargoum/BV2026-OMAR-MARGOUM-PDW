@@ -1,0 +1,54 @@
+{
+    "extensions":  {
+                       "recommendations":  [
+                                               "antfu.theme-vitesse",
+                                               "PKief.material-icon-theme",
+                                               "PKief.material-product-icons"
+                                           ]
+                   },
+    "folders":  [
+                    {
+                        "path":  "."
+                    }
+                ],
+    "settings":  {
+                     "workbench.colorTheme":  "Atom Material Theme",
+                     "workbench.iconTheme":  "a-file-icon-vscode",
+                     "workbench.productIconTheme":  "material-product-icons",
+                     "workbench.activityBar.location":  "default",
+                     "window.commandCenter":  true,
+                     "workbench.startupEditor":  "none",
+                     "workbench.tree.indent":  16,
+                     "workbench.list.smoothScrolling":  true,
+                     "explorer.compactFolders":  false,
+                     "breadcrumbs.enabled":  true,
+                     "material-icon-theme.folders.theme":  "specific",
+                     "material-icon-theme.opacity":  0.95,
+                     "material-icon-theme.saturation":  0.85,
+                     "editor.fontFamily":  "\u0027JetBrains Mono\u0027, \u0027Cascadia Code\u0027, Consolas, \u0027Courier New\u0027, monospace",
+                     "editor.fontLigatures":  true,
+                     "editor.fontSize":  14,
+                     "editor.lineHeight":  22,
+                     "editor.letterSpacing":  0.2,
+                     "editor.padding.top":  10,
+                     "editor.padding.bottom":  10,
+                     "editor.semanticHighlighting.enabled":  true,
+                     "editor.minimap.enabled":  false,
+                     "editor.stickyScroll.enabled":  true,
+                     "editor.renderWhitespace":  "selection",
+                     "editor.scrollBeyondLastLine":  false,
+                     "editor.smoothScrolling":  true,
+                     "editor.cursorSmoothCaretAnimation":  "on",
+                     "editor.cursorBlinking":  "smooth",
+                     "editor.bracketPairColorization.enabled":  true,
+                     "editor.guides.bracketPairs":  "active",
+                     "editor.guides.bracketPairsHorizontal":  "active",
+                     "editor.guides.indentation":  true,
+                     "editor.guides.highlightActiveIndentation":  true,
+                     "terminal.integrated.fontFamily":  "\u0027JetBrains Mono\u0027, \u0027Cascadia Mono\u0027, Consolas, monospace",
+                     "terminal.integrated.fontSize":  13,
+                     "files.eol":  "\n",
+                     "files.insertFinalNewline":  true,
+                     "files.trimTrailingWhitespace":  true
+                 }
+}
