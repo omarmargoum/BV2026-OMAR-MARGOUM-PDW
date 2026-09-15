@@ -1,0 +1,23 @@
+{
+  "name": "bv2026-omar-margoum-pdw",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/omarmargoum/BV2026-OMAR-MARGOUM-PDW.git"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/omarmargoum/BV2026-OMAR-MARGOUM-PDW/issues"
+  },
+  "homepage": "https://github.com/omarmargoum/BV2026-OMAR-MARGOUM-PDW#readme",
+  "devDependencies": {
+    "@types/node": "^22.20.2",
+    "typescript": "^7.0.2"
+  }
+}
