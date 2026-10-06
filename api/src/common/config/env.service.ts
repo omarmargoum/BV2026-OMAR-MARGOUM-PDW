@@ -1,31 +1,22 @@
-import { Injectable } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import { AppMode, ConfigKey } from "./data/enum";
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
-
-export type ValidatedEnviroment = {
-  [key: string]: string | number | boolean | undefined;
-};
+import {
+  ConfigKey,
+} from './data/enum/index.js';
 
 @Injectable()
 export class EnvService {
   constructor(
-    private readonly configService: ConfigService<ValidatedEnviroment, true>,
+    private readonly configService: ConfigService,
   ) {}
 
-  get<T = string>(key: string): T;
-  get<T extends keyof ValidatedEnviroment>(key: T): ValidatedEnviroment[T];
-  get<T = string>(key: string): T {
-    const value = this.configService.get<T>(key as keyof ValidatedEnviroment);
+  get port(): number {
+    const value = this.configService.get<string>(
+      ConfigKey.port,
+      '3000',
+    );
 
-    if (value === undefined) {
-      throw new Error(`Environment variable "${key}" is not defined`);
-    }
-
-    return value;
-  }
-
-  get AppMode(): AppMode {
-    return this.get(ConfigKey.APP_MODE) as AppMode;
+    return Number(value);
   }
 }

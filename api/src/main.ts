@@ -1,18 +1,48 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './root/app.module';
+import {
+  NestFactory,
+} from '@nestjs/core';
 
+import {
+  EnvService,
+} from './common/config/index.js';
 
-/* async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.PORT ?? 3000);
-}
-bootstrap();
- */
-const bootstrap = async () => {
-  const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.PORT ?? 3000);
-}
-bootstrap().catch((err) => {
-  console.error('Error starting the application:', err);
-  process.exit(1);
-} );
+import {
+  AppLoggerService,
+} from './common/logging/index.js';
+
+import {
+  AppModule,
+} from './root/index.js';
+
+const bootstrap =
+  async (): Promise<void> => {
+    const app =
+      await NestFactory.create(
+        AppModule,
+        {
+          bufferLogs: true,
+        },
+      );
+
+    const logger =
+      app.get(AppLoggerService);
+
+    const envService =
+      app.get(EnvService);
+
+    const port: number =
+      envService.port;
+
+    app.useLogger(logger);
+    app.enableShutdownHooks();
+
+    await app.listen(port);
+
+    logger.log(
+      `API disponible sur le port ${port}`,
+      'Bootstrap',
+    );
+  };
+
+void bootstrap();
+``
