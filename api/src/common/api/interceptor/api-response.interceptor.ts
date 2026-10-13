@@ -1,0 +1,43 @@
+import {
+  CallHandler,
+  ExecutionContext,
+  Injectable,
+  type NestInterceptor,
+} from '@nestjs/common';
+
+import type {
+  Observable,
+} from 'rxjs';
+
+import {
+  map,
+} from 'rxjs/operators';
+
+import {
+  ApiCodeResponse,
+  type ApiResponse,
+} from '../data/index.js';
+
+@Injectable()
+export class ApiResponseInterceptor<TData>
+  implements
+    NestInterceptor<
+      TData,
+      ApiResponse<TData>
+    >
+{
+  intercept(
+    _context: ExecutionContext,
+    next: CallHandler<TData>,
+  ): Observable<ApiResponse<TData>> {
+    return next.handle().pipe(
+      map(
+        (data: TData): ApiResponse<TData> => ({
+          success: true,
+          code: ApiCodeResponse.Success,
+          data,
+        }),
+      ),
+    );
+  }
+}

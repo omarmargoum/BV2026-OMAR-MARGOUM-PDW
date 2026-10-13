@@ -1,4 +1,7 @@
 import { Module } from '@nestjs/common';
+import {
+  ApiModule
+} from '../common/api/index.js';
 
 import {
   AppConfigModule,
@@ -20,6 +23,7 @@ import {
     LoggingModule,
     DatabaseModule,
     HealthModule,
+    ApiModule,
   ],
 })
 export class AppModule {}
