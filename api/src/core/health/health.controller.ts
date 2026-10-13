@@ -3,14 +3,20 @@ import {
   Get,
 } from '@nestjs/common';
 
+import {
+  HealthService,
+} from './health.service.js';
+
 @Controller('health')
 export class HealthController {
+  constructor(
+    private readonly healthService: HealthService,
+  ) {}
+
   @Get('live')
   getLiveStatus(): {
     status: string;
   } {
-    return {
-      status: 'UP',
-    };
+    return this.healthService.getLiveStatus();
   }
 }

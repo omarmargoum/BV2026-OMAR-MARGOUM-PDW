@@ -1,4 +1,12 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class HealthService {}
+export class HealthService {
+  getLiveStatus(): {
+    status: string;
+  } {
+    return {
+      status: 'UP',
+    };
+  }
+}
