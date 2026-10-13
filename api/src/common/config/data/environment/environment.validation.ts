@@ -4,7 +4,7 @@ import { LogLevel } from "../enum/log-level.enum";
 
 const environmentValidation = z.object({
   APP_PORT: z.coerce.number().int().min(1).max(65535).default(3000),
-  APP_MODE: z.nativeEnum(AppMode).default(AppMode.DEVELOPMENT),
+  APP_MODE: z.nativeEnum(AppMode).default(AppMode.Development),
   DATABASE_URL: z.string().min(1, "La variable DATABASE_URL est requise"),
 }); 
 export type EnvironmentValidation = z.infer<typeof environmentValidation>;

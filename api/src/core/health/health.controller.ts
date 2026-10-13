@@ -1,0 +1,16 @@
+import {
+  Controller,
+  Get,
+} from '@nestjs/common';
+
+@Controller('health')
+export class HealthController {
+  @Get('live')
+  getLiveStatus(): {
+    status: string;
+  } {
+    return {
+      status: 'UP',
+    };
+  }
+}

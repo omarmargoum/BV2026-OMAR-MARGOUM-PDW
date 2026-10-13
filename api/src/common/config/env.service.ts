@@ -38,7 +38,7 @@ export class EnvService {
   get appMode(): AppMode {
     return this.configService.get<AppMode>(
       ConfigKey.APP_MODE,
-      AppMode.DEVELOPMENT,
+      AppMode.Development,
     );
   }
 
@@ -106,7 +106,7 @@ get logLevel(): LogLevel {
   }
 
   get isProduction(): boolean {
-    return this.appMode === AppMode.PRODUCTION;
+    return this.appMode === AppMode.Production;
   }
 
   private parsePort(
