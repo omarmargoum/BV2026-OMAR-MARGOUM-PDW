@@ -35,7 +35,18 @@ const bootstrap =
 
     app.useLogger(logger);
     app.enableShutdownHooks();
-
+/* // Test temporaire de la configuration PostgreSQL
+  logger.log(
+    {
+      databaseHost: envService.databaseHost,
+      databasePort: envService.databasePort,
+      databaseUsername: envService.databaseUsername,
+      databaseName: envService.databaseName,
+      databaseSynchronize:
+        envService.databaseSynchronize,
+    },
+    'DatabaseConfiguration',
+  ); */
     await app.listen(port);
 
     logger.log(
@@ -45,4 +56,3 @@ const bootstrap =
   };
 
 void bootstrap();
-``
