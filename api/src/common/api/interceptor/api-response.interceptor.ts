@@ -14,29 +14,24 @@ import {
 } from 'rxjs/operators';
 
 import {
-  ApiCodeResponse,
-  type ApiResponse,
+  ApiResponse,
 } from '../data/index.js';
 
 @Injectable()
 export class ApiResponseInterceptor<TData>
-  implements
-    NestInterceptor<
-      TData,
-      ApiResponse<TData>
-    >
+  implements NestInterceptor<
+    TData,
+    ApiResponse<TData>
+  >
 {
   intercept(
     _context: ExecutionContext,
-    next: CallHandler<TData>,
+    next: CallHandler,
   ): Observable<ApiResponse<TData>> {
     return next.handle().pipe(
       map(
-        (data: TData): ApiResponse<TData> => ({
-          success: true,
-          code: ApiCodeResponse.Success,
-          data,
-        }),
+        (data: TData): ApiResponse<TData> =>
+          ApiResponse.success(data),
       ),
     );
   }

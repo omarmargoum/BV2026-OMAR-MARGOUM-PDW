@@ -3,4 +3,6 @@ export enum ApiCodeResponse {
   Created = 'CREATED',
   Updated = 'UPDATED',
   Deleted = 'DELETED',
+  CommonSuccess = 'api.common.success',
+  CommonError = 'api.common.error',
 }

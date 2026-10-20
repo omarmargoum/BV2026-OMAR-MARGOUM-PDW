@@ -1,2 +1,3 @@
 export * from './enum/index';
-export * from './interface/index';
+
+export * from './model/index';
