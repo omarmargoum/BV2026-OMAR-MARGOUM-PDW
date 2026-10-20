@@ -9,7 +9,11 @@ import {
 import {
   DatabaseModule,
 } from '../common/database/index';
+import {
+  ApiResponseInterceptor,
+  HttpExceptionFilter,
 
+} from '../common/api/index.js';
 
 import {
   LoggingModule,
@@ -24,6 +28,10 @@ import {
     DatabaseModule,
     HealthModule,
     ApiModule,
+  ],
+  providers: [
+    HttpExceptionFilter,
+    ApiResponseInterceptor,
   ],
 })
 export class AppModule {}

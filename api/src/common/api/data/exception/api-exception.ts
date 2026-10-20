@@ -1,27 +1,62 @@
 import {
   HttpException,
   HttpStatus,
-  type HttpExceptionOptions,
 } from '@nestjs/common';
 
 import {
   ApiCodeResponse,
-} from '../enum/index.js';
+} from '../enum/api-code-response.enum.js';
 
 import {
   ApiResponse,
-} from '../model/index.js';
+} from '../model/api-response.js';
 
-export class ApiException extends HttpException {
+import {
+  ApiValidationError,
+} from '../model/api-validation-error.js';
+
+export type ApiExceptionOptions<T = unknown> = {
+  statusCode?: HttpStatus;
+  code?: string;
+  data?: T | null;
+  validationErrors?: ApiValidationError[];
+  logMessage?: string;
+};
+
+export class ApiException<T = unknown>
+  extends HttpException
+{
+  readonly apiCode: string;
+
+  readonly apiData: T | null;
+
+  readonly apiValidationErrors:
+    ApiValidationError[];
+
+  readonly logMessage?: string;
+
   constructor(
-    status: HttpStatus,
-    code: string = ApiCodeResponse.CommonError,
-    options?: HttpExceptionOptions,
+    options: ApiExceptionOptions<T> = {},
   ) {
-    super(
-      ApiResponse.error(code),
-      status,
-      options,
-    );
+    const statusCode =
+      options.statusCode ??
+      HttpStatus.BAD_REQUEST;
+
+    const response = ApiResponse.error<T>({
+      code:
+        options.code ??
+        ApiCodeResponse.CommonError,
+      data: options.data ?? null,
+      validationErrors:
+        options.validationErrors ?? [],
+    });
+
+    super(response, statusCode);
+
+    this.apiCode = response.code;
+    this.apiData = response.data;
+    this.apiValidationErrors =
+      response.validationErrors;
+    this.logMessage = options.logMessage;
   }
 }

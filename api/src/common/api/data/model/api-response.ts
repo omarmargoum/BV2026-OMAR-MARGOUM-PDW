@@ -1,16 +1,14 @@
-import {
-  ApiProperty,
-} from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
 import {
   ApiCodeResponse,
-} from '../enum/index.js';
+} from '../enum/api-code-response.enum.js';
 
 import {
   ApiValidationError,
 } from './api-validation-error.js';
 
-export class ApiResponse<TData> {
+export class ApiResponse<T> {
   @ApiProperty({
     example: ApiCodeResponse.CommonSuccess,
   })
@@ -24,43 +22,41 @@ export class ApiResponse<TData> {
   @ApiProperty({
     nullable: true,
   })
-  data!: TData | null;
+  data!: T | null;
 
   @ApiProperty({
     type: () => [ApiValidationError],
   })
   validationErrors!: ApiValidationError[];
 
-  static success<TData>(
-    data: TData,
-    code: string = ApiCodeResponse.CommonSuccess,
-  ): ApiResponse<TData> {
-    const response =
-      new ApiResponse<TData>();
-
-    response.code = code;
-    response.result = true;
-    response.data = data;
-    response.validationErrors = [];
-
-    return response;
+  static success<T>(
+    data: T,
+    code: string =
+      ApiCodeResponse.CommonSuccess,
+  ): ApiResponse<T> {
+    return {
+      code,
+      result: true,
+      data,
+      validationErrors: [],
+    };
   }
 
-  static error<TData = never>(
-    code: string =
-      ApiCodeResponse.CommonError,
-    validationErrors:
-      ApiValidationError[] = [],
-  ): ApiResponse<TData> {
-    const response =
-      new ApiResponse<TData>();
-
-    response.code = code;
-    response.result = false;
-    response.data = null;
-    response.validationErrors =
-      validationErrors;
-
-    return response;
+  static error<T = null>(
+    options: {
+      code?: string;
+      data?: T | null;
+      validationErrors?: ApiValidationError[];
+    } = {},
+  ): ApiResponse<T> {
+    return {
+      code:
+        options.code ??
+        ApiCodeResponse.CommonError,
+      result: false,
+      data: options.data ?? null,
+      validationErrors:
+        options.validationErrors ?? [],
+    };
   }
 }

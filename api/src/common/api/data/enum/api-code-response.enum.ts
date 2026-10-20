@@ -5,5 +5,5 @@ export enum ApiCodeResponse {
   Deleted = 'DELETED',
   CommonSuccess = 'api.common.success',
   CommonError = 'api.common.error',
-  ValidationError = 'api.common.validation.error',
+  CommonValidationError= 'api.common.validation.error',
 }
