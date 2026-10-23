@@ -12,6 +12,7 @@ import {
 
 import {
   AppModule,
+  configureApplication,
 } from './root/index.js';
 
 const bootstrap =
@@ -23,7 +24,7 @@ const bootstrap =
           bufferLogs: true,
         },
       );
-
+    configureApplication(app);
     const logger =
       app.get(AppLoggerService);
 

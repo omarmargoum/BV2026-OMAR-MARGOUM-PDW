@@ -19,4 +19,8 @@ export class HealthController {
   } {
     return this.healthService.getLiveStatus();
   }
+  @Get('error')
+  testUnexpectedError(): never {
+    throw new Error('Erreur technique de test ');
+  }
 }

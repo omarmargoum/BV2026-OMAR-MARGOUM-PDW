@@ -1,7 +1,11 @@
-import type {
-  INestApplication,
+import {
+  HttpStatus,
+  ValidationPipe,
+  type INestApplication,
 } from '@nestjs/common';
-
+import type {
+  ValidationError,
+} from 'class-validator';
 import {
   Logger,
 } from 'nestjs-pino';
@@ -9,6 +13,7 @@ import {
 import {
   ApiResponseInterceptor,
   HttpExceptionFilter,
+  ValidationException,
 } from '../../common/api/index.js';
 
 export const configureApplication = (
@@ -25,6 +30,21 @@ export const configureApplication = (
   app.useLogger(logger);
 
   app.enableShutdownHooks();
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+      exceptionFactory:(
+        errors: ValidationError[],
+      ): ValidationException => 
+          ValidationException
+          .fromClassValidatorErrors(
+            errors, 
+            HttpStatus.UNPROCESSABLE_ENTITY,
+      ),
+    }),
+  );
 
   app.useGlobalFilters(
     exceptionFilter,
