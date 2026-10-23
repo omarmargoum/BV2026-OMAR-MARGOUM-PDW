@@ -4,4 +4,4 @@ export * from './http-log-level.util';
 export * from './logging.module';
 export * from './logging-redaction';
 export * from './request-id.util';
-export * from './data/enum/log-category.enum';
+export * from './data/index';
