@@ -21,6 +21,7 @@ import {
   LoggingModule,
 } from '../common/logging/index';
 import {
+  AuthenticationModule,
   HealthModule,
 } from '../core/index';
 @Module({
@@ -28,6 +29,7 @@ import {
     AppConfigModule,
     LoggingModule,
     DatabaseModule,
+    AuthenticationModule,
     HealthModule,
     ApiModule,
     AccountModule,

@@ -1,0 +1,6 @@
+export * from './authentication.module.js';
+export * from './data/index.js';
+export * from './credential/index.js';
+export * from './identifier/index.js';
+export * from './registration/index.js';
+export * from './security/index.js';
