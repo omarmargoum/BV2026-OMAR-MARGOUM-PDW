@@ -6,6 +6,7 @@ import {
 import type {
   ValidationError,
 } from 'class-validator';
+
 import {
   Logger,
 } from 'nestjs-pino';
@@ -13,6 +14,7 @@ import {
 import {
   ApiResponseInterceptor,
   HttpExceptionFilter,
+  setupSwagger,
   ValidationException,
 } from '../../common/api/index.js';
 
@@ -53,4 +55,6 @@ export const configureApplication = (
   app.useGlobalInterceptors(
     responseInterceptor,
   );
+
+  setupSwagger(app);
 };

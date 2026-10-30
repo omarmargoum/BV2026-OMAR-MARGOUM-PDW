@@ -10,7 +10,7 @@ import {
 export const setupSwagger = (
   app: INestApplication,
 ): void => {
-  const config =
+  const swaggerConfig =
     new DocumentBuilder()
       .setTitle('BV2026 API')
       .setDescription(
@@ -20,15 +20,15 @@ export const setupSwagger = (
       .addBearerAuth()
       .build();
 
-  const document =
+  const swaggerDocument =
     SwaggerModule.createDocument(
       app,
-      config,
+      swaggerConfig,
     );
 
   SwaggerModule.setup(
     'documentation',
     app,
-    document,
+    swaggerDocument,
   );
 };
