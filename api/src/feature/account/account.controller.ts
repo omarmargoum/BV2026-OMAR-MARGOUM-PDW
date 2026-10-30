@@ -44,10 +44,7 @@ export class AccountController {
   })
   @HttpCode(HttpStatus.CREATED)
   @Post()
-  async create():
-    Promise<AccountResponseDto> {
-    return this.accountService.create();
-  }
+  
 
   @ApiOperation({
     summary:
