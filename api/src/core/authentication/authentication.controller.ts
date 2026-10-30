@@ -1,16 +1,20 @@
 import {
   Body,
   Controller,
+  Headers,
   HttpCode,
   HttpStatus,
+  Ip,
   Post,
 } from '@nestjs/common';
 
 import {
   ApiConflictResponse,
   ApiCreatedResponse,
+  ApiOkResponse,
   ApiOperation,
   ApiTags,
+  ApiUnauthorizedResponse,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 
@@ -19,8 +23,14 @@ import {
 } from '../../feature/account/data/index.js';
 
 import {
+  LoginRequestDto,
+  LoginResponseDto,
   RegisterRequestDto,
 } from './data/index.js';
+
+import {
+  LoginService,
+} from './login/index.js';
 
 import {
   RegistrationService,
@@ -32,6 +42,9 @@ export class AuthenticationController {
   constructor(
     private readonly registrationService:
       RegistrationService,
+
+    private readonly loginService:
+      LoginService,
   ) {}
 
   @ApiOperation({
@@ -61,5 +74,44 @@ export class AuthenticationController {
   ): Promise<AccountResponseDto> {
     return this.registrationService
       .register(input);
+  }
+
+  @ApiOperation({
+    summary:
+      'Vérifier les identifiants de connexion',
+    description:
+      'Vérifie l’adresse e-mail et le mot de passe. La création de session et de jetons sera ajoutée ensuite.',
+  })
+  @ApiOkResponse({
+    description:
+      'Les identifiants sont valides et une session a été créée.',
+    type: LoginResponseDto,
+  })
+  @ApiUnauthorizedResponse({
+    description:
+      'Les identifiants sont invalides.',
+  })
+  @ApiUnprocessableEntityResponse({
+    description:
+      'Les données envoyées ne respectent pas les règles de validation.',
+  })
+  @HttpCode(HttpStatus.OK)
+  @Post('login')
+  async login(
+    @Body()
+    input: LoginRequestDto,
+    @Ip()
+    ipAddress: string,
+    @Headers('user-agent')
+    userAgent?: string,
+  ): Promise<LoginResponseDto> {
+    return this.loginService.login(
+      input,
+      {
+        ipAddress,
+        userAgent:
+            userAgent ?? null,
+      },
+    );
   }
 }

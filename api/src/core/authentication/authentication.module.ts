@@ -8,7 +8,9 @@ import {
 import {
     AuthenticationController,
 } from './authentication.controller.js';
-
+import {
+    AccountEntity,
+} from '../../feature/account/data/index.js';
 import {
   AuthIdentifierEntity,
   AuthRefreshTokenEntity,
@@ -19,6 +21,9 @@ import {
     AuthIdentifierService,
 } from './identifier/index.js';
 import {
+    LoginService,
+} from './login/index.js';
+import {
   RegistrationService,
 } from './registration/index.js';
 import {
@@ -27,14 +32,17 @@ import {
 import {
   PasswordHashingService,
 } from './security/index.js';
-
+import {
+    SessionService,
+} from './session/index.js';
 @Module({
   imports: [
     TypeOrmModule.forFeature([
-      AuthIdentifierEntity,
-      PasswordCredentialEntity,
-      AuthSessionEntity,
-      AuthRefreshTokenEntity,
+        AccountEntity,
+        AuthIdentifierEntity,
+        PasswordCredentialEntity,
+        AuthSessionEntity,
+        AuthRefreshTokenEntity,
     ]),
   ],
 controllers: [  
@@ -45,12 +53,16 @@ providers: [
     PasswordCredentialService,
     AuthIdentifierService,
     RegistrationService,
+    LoginService,
+    SessionService,
   ],
 exports: [
     PasswordHashingService,
     PasswordCredentialService,
     AuthIdentifierService,
     RegistrationService,
+    LoginService,
+    SessionService,
   ],
 })
 export class AuthenticationModule {}
