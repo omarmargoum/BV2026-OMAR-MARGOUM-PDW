@@ -2,7 +2,9 @@ import { Module } from '@nestjs/common';
 import {
   ApiModule
 } from '../common/api/index.js';
-
+import {
+  AccountModule,
+} from '../feature/index.js';
 import {
   AppConfigModule,
 } from '../common/config/index';
@@ -28,6 +30,7 @@ import {
     DatabaseModule,
     HealthModule,
     ApiModule,
+    AccountModule,
   ],
   providers: [
     HttpExceptionFilter,
