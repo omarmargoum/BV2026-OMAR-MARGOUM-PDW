@@ -4,11 +4,15 @@ import {
   HttpStatus,
   Injectable,
 } from '@nestjs/common';
-
+import {
+    IS_PUBLIC_KEY,
+} from '../decorator/public.decorator.js';
 import type {
   Request,
 } from 'express';
-
+import {
+    Reflector,
+} from '@nestjs/core';
 import {
   ApiCodeResponse,
   ApiException,
@@ -37,7 +41,8 @@ export class AccessTokenGuard
   constructor(
     private readonly authTokenService:
       AuthTokenService,
-
+    private readonly reflector:
+      Reflector,
     private readonly sessionService:
       SessionService,
   ) {}
@@ -89,7 +94,28 @@ export class AccessTokenGuard
         throw this
           .createUnauthorizedException();
       }
+    const isPublic =
+        this.reflector
+        .getAllAndOverride<boolean>(
+            IS_PUBLIC_KEY,
+            [
+                context.getHandler(),
+                context.getClass(),
+            ],
+            );
 
+            if (isPublic) {
+            return true;
+            }
+    const request =
+            context
+            .switchToHttp()
+            .getRequest<AuthenticatedRequest>();
+
+        const accessToken =
+            this.extractBearerToken(
+            request,
+            );
       request.auth = {
         accountId:
           payload.sub,

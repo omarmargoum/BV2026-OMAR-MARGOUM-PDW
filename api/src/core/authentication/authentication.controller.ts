@@ -38,6 +38,7 @@ import {
 } from './data/index.js';
 import {
   CurrentAuth,
+  Public,
 } from './decorator/index.js';
 import {
   AccessTokenGuard,
@@ -89,6 +90,7 @@ export class AuthenticationController {
     description:
       'Les données envoyées ne respectent pas les règles de validation.',
   })
+  @Public()
   @HttpCode(HttpStatus.CREATED)
   @Post('register')
   async register(
@@ -120,6 +122,7 @@ export class AuthenticationController {
     description:
       'Les données envoyées ne respectent pas les règles de validation.',
   })
+  @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(
@@ -158,6 +161,7 @@ export class AuthenticationController {
     description:
       'Le corps de la requête est invalide.',
   })
+  @Public()
   @HttpCode(HttpStatus.OK)
   @Post('refresh')
   async refresh(
@@ -182,6 +186,7 @@ export class AuthenticationController {
   description:
     'Le corps de la requête est invalide.',
 })
+@Public()
 @HttpCode(HttpStatus.OK)
 @Post('logout')
 async logout(
@@ -205,9 +210,7 @@ async logout(
   description:
     'Le jeton ou la session est invalide.',
 })
-@UseGuards(
-  AccessTokenGuard,
-)
+
 @Get('session')
 getCurrentSession(
   @CurrentAuth()

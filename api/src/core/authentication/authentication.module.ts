@@ -12,6 +12,9 @@ import {
     AccountEntity,
 } from '../../feature/account/data/index.js';
 import {
+  APP_GUARD,
+} from '@nestjs/core';
+import {
   AccessTokenGuard, 
 } from './guard/index.js';
 import {
@@ -78,6 +81,10 @@ providers: [
     AuthTokenService,
     RefreshTokenService,
     TokenRotationService,
+    {
+      provide: APP_GUARD,
+      useExisting: AccessTokenGuard,
+    },
   ],
 exports: [
     AccessTokenGuard,
