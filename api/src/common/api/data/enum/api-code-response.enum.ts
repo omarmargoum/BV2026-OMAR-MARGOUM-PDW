@@ -8,5 +8,6 @@ export enum ApiCodeResponse {
   AuthRegistrationIdentifierUnavailable = 'api.auth.registration.identifier.unavailable',
   AuthRefreshTokenInvalid ='api.auth.refresh-token.invalid',
   AuthLoginInvalidCredentials = 'api.auth.login.invalid-credentials',
-
+  AuthLogoutSuccess = 'api.auth.logout.success',
+  AuthAccessUnauthorized = 'api.auth.access.unauthorized',
 }

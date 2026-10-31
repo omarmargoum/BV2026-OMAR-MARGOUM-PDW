@@ -30,8 +30,13 @@ import {
     LoginService,
 } from './login/index.js';
 import {
+  LogoutService,
+} from './logout/index.js';
+import {
     RefreshTokenService,
+    TokenRotationService,
 } from './refresh-token/index.js';
+
 import {
   RegistrationService,
 } from './registration/index.js';
@@ -64,9 +69,11 @@ providers: [
     AuthIdentifierService,
     RegistrationService,
     LoginService,
+    LogoutService,
     SessionService,
     AuthTokenService,
     RefreshTokenService,
+    TokenRotationService,
   ],
 exports: [
     PasswordHashingService,
@@ -74,9 +81,11 @@ exports: [
     AuthIdentifierService,
     RegistrationService,
     LoginService,
+    LogoutService,
     SessionService,
     AuthTokenService,
     RefreshTokenService,
+    TokenRotationService, 
     ],
 })
 export class AuthenticationModule {}

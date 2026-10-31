@@ -25,13 +25,22 @@ import {
 import {
   LoginRequestDto,
   LoginResponseDto,
+  LogoutRequestDto,
+  LogoutResponseDto,
   RegisterRequestDto,
+  RefreshRequestDto, 
+  RefreshResponseDto,
 } from './data/index.js';
 
 import {
   LoginService,
 } from './login/index.js';
-
+import {
+  LogoutService,
+} from './logout/index.js';
+import {
+  TokenRotationService,
+} from './refresh-token/index.js';
 import {
   RegistrationService,
 } from './registration/index.js';
@@ -45,6 +54,10 @@ export class AuthenticationController {
 
     private readonly loginService:
       LoginService,
+    private readonly tokenRotationService:
+      TokenRotationService,
+    private readonly logoutService:
+      LogoutService,
   ) {}
 
   @ApiOperation({
@@ -81,8 +94,10 @@ export class AuthenticationController {
       'Vérifier les identifiants de connexion',
     description:
       'Vérifie l’adresse e-mail et le mot de passe. La création de session et de jetons sera ajoutée ensuite.',
+      
   })
   @ApiOkResponse({
+    
     description:
       'Les identifiants sont valides et une session a été créée.',
     type: LoginResponseDto,
@@ -114,4 +129,58 @@ export class AuthenticationController {
       },
     );
   }
+  @ApiOperation({
+    summary:
+      'Renouveler les jetons d’authentification',
+    description:
+      'Invalide le refresh token actuel et délivre une nouvelle paire de jetons.',
+  })
+  @ApiOkResponse({
+    description:
+      'Les jetons ont été renouvelés.',
+    type: RefreshResponseDto,
+  })
+  @ApiUnauthorizedResponse({
+    description:
+      'Le refresh token est invalide, expiré, utilisé ou révoqué.',
+  })
+  @ApiUnprocessableEntityResponse({
+    description:
+      'Le corps de la requête est invalide.',
+  })
+  @HttpCode(HttpStatus.OK)
+  @Post('refresh')
+  async refresh(
+    @Body()
+    input: RefreshRequestDto,
+  ): Promise<RefreshResponseDto> {
+    return this.tokenRotationService
+      .rotate(input);
+  }
+ @ApiOperation({
+  summary:
+    'Fermer une session utilisateur',
+  description:
+    'Révoque la session et tous les refresh tokens qui lui sont associés.',
+})
+@ApiOkResponse({
+  description:
+    'La déconnexion a été traitée.',
+  type: LogoutResponseDto,
+})
+@ApiUnprocessableEntityResponse({
+  description:
+    'Le corps de la requête est invalide.',
+})
+@HttpCode(HttpStatus.OK)
+@Post('logout')
+async logout(
+  @Body()
+  input: LogoutRequestDto,
+): Promise<LogoutResponseDto> {
+  return this.logoutService.logout(
+    input,
+  );
 }
+}
+
