@@ -12,6 +12,9 @@ import {
     AccountEntity,
 } from '../../feature/account/data/index.js';
 import {
+  AccessTokenGuard, 
+} from './guard/index.js';
+import {
   AuthIdentifierEntity,
   AuthRefreshTokenEntity,
   AuthSessionEntity,
@@ -64,6 +67,7 @@ controllers: [
     AuthenticationController
   ],
 providers: [
+    AccessTokenGuard,
     PasswordHashingService,
     PasswordCredentialService,
     AuthIdentifierService,
@@ -76,6 +80,7 @@ providers: [
     TokenRotationService,
   ],
 exports: [
+    AccessTokenGuard,
     PasswordHashingService,
     PasswordCredentialService,
     AuthIdentifierService,

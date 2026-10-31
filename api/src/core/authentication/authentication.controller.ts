@@ -4,11 +4,14 @@ import {
   Headers,
   HttpCode,
   HttpStatus,
+  Get,
   Ip,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 
 import {
+  ApiBearerAuth,
   ApiConflictResponse,
   ApiCreatedResponse,
   ApiOkResponse,
@@ -21,7 +24,9 @@ import {
 import {
   AccountResponseDto,
 } from '../../feature/account/data/index.js';
-
+import type {
+  AuthContext,
+} from './data/index.js';
 import {
   LoginRequestDto,
   LoginResponseDto,
@@ -31,7 +36,12 @@ import {
   RefreshRequestDto, 
   RefreshResponseDto,
 } from './data/index.js';
-
+import {
+  CurrentAuth,
+} from './decorator/index.js';
+import {
+  AccessTokenGuard,
+} from './guard/index.js';
 import {
   LoginService,
 } from './login/index.js';
@@ -181,6 +191,29 @@ async logout(
   return this.logoutService.logout(
     input,
   );
+}
+@ApiBearerAuth()
+@ApiOperation({
+  summary:
+    'Vérifier la session authentifiée',
+})
+@ApiOkResponse({
+  description:
+    'Le jeton d’accès et la session sont valides.',
+})
+@ApiUnauthorizedResponse({
+  description:
+    'Le jeton ou la session est invalide.',
+})
+@UseGuards(
+  AccessTokenGuard,
+)
+@Get('session')
+getCurrentSession(
+  @CurrentAuth()
+  auth: AuthContext,
+): AuthContext {
+  return auth;
 }
 }
 
