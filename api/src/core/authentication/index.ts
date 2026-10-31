@@ -4,5 +4,7 @@ export * from './credential/index.js';
 export * from './identifier/index.js';
 export * from './login/index.js';
 export * from './registration/index.js';
+export * from './refresh-token/index.js';
 export * from './security/index.js';
 export * from './session/index.js';
+export * from './token/index.js';

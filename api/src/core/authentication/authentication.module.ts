@@ -20,9 +20,18 @@ import {
 import {
     AuthIdentifierService,
 } from './identifier/index.js';
+import {   
+    AuthTokenService,
+} from './token/index.js';
+import {
+  JwtModule,
+} from '@nestjs/jwt';
 import {
     LoginService,
 } from './login/index.js';
+import {
+    RefreshTokenService,
+} from './refresh-token/index.js';
 import {
   RegistrationService,
 } from './registration/index.js';
@@ -37,6 +46,7 @@ import {
 } from './session/index.js';
 @Module({
   imports: [
+    JwtModule.register({}),
     TypeOrmModule.forFeature([
         AccountEntity,
         AuthIdentifierEntity,
@@ -55,6 +65,8 @@ providers: [
     RegistrationService,
     LoginService,
     SessionService,
+    AuthTokenService,
+    RefreshTokenService,
   ],
 exports: [
     PasswordHashingService,
@@ -63,6 +75,8 @@ exports: [
     RegistrationService,
     LoginService,
     SessionService,
-  ],
+    AuthTokenService,
+    RefreshTokenService,
+    ],
 })
 export class AuthenticationModule {}

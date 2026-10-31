@@ -23,6 +23,7 @@ export class EnvService {
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
+
 import {
   AppMode,
   ConfigKey,
@@ -34,7 +35,63 @@ export class EnvService {
   constructor(
     private readonly configService: ConfigService,
   ) {}
+  get authAccessTokenSecret(): string {
+    return this.configService
+    .getOrThrow<string>(
+      ConfigKey
+      .AUTH_ACCESS_TOKEN_SECRET,
+    );
+  }
+  get authRefreshTokenSecret(): string {
+    return this.configService
+    .getOrThrow<string>(
+      ConfigKey
+      .AUTH_REFRESH_TOKEN_SECRET,
+    );
+  }
+  get authAccessTokenExpiresInSeconds(): 
+  number {
+    const value = 
+    this.configService
+    .getOrThrow<string>(
+      ConfigKey
+      .AUTH_ACCESS_TOKEN_EXPIRES_IN_SECONDS,
+    );
+    const duration = Number(value);
 
+    if (
+      !Number.isInteger(duration) ||
+      duration <= 0
+    ) {
+      throw new Error(
+        `AUTH_ACCESS_TOKEN_EXPIRES_IN_SECONDS doit être un entier positif.`,
+      );
+    }
+       
+    return duration;
+  }
+  get authRefreshTokenExpiresInDays():
+   number {
+    const value = 
+    this.configService
+    .getOrThrow<string>(
+      ConfigKey
+      .AUTH_REFRESH_TOKEN_EXPIRES_IN_DAYS,
+    );
+    const duration = Number(value);
+
+    if (
+      !Number.isInteger(duration) ||
+      duration <= 0
+    ) {
+      throw new Error(
+        `AUTH_REFRESH_TOKEN_EXPIRES_IN_DAYS doit être un entier positif.`,
+      );
+    }
+
+    return duration;
+  }
+  
   get appMode(): AppMode {
     return this.configService.get<AppMode>(
       ConfigKey.APP_MODE,
