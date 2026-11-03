@@ -1,0 +1,1 @@
+// Les migrations TypeORM seront exportées ici si nécessaire.
