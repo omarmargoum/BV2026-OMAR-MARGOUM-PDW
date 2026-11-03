@@ -12,8 +12,10 @@ import {
 import {
   HealthService,
 } from './health.service.js';
-
-
+import {
+  Public,
+}from '../authentication/decorator/index.js'
+@Public()  
 @ApiTags('Health')
 @Controller('health')
 export class HealthController {
@@ -22,7 +24,7 @@ export class HealthController {
   ) {}
   @ApiOperation({
     summary: 'Vérifier que l\'API est disponible et fonctionne correctement',
-  })  
+  })
   @Get('live')
   getLiveStatus(): {
     status: string;

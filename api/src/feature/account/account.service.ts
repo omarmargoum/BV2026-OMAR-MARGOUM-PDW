@@ -29,23 +29,6 @@ export class AccountService {
       Repository<AccountEntity>,
   ) {}
 
-  async create():
-    Promise<AccountResponseDto> {
-    const account =
-      this.accountRepository.create({
-        status: AccountStatus.Pending,
-      });
-
-    const savedAccount =
-      await this.accountRepository.save(
-        account,
-      );
-
-    return AccountResponseDto.fromEntity(
-      savedAccount,
-    );
-  }
-
   async findById(
     id: string,
   ): Promise<AccountResponseDto> {

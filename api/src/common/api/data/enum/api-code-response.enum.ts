@@ -10,4 +10,5 @@ export enum ApiCodeResponse {
   AuthLoginInvalidCredentials = 'api.auth.login.invalid-credentials',
   AuthLogoutSuccess = 'api.auth.logout.success',
   AuthAccessUnauthorized = 'api.auth.access.unauthorized',
+  AuthRefreshTokenReuseDetected ='api.auth.refresh-token.reuse-detected', 
 }

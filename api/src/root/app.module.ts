@@ -1,7 +1,7 @@
-import { Module } from '@nestjs/common';
-import {
-  ApiModule
-} from '../common/api/index.js';
+import { 
+  Module 
+} from '@nestjs/common';
+
 import {
   AccountModule,
 } from '../feature/index.js';
@@ -12,6 +12,7 @@ import {
   DatabaseModule,
 } from '../common/database/index';
 import {
+  ApiModule,
   ApiResponseInterceptor,
   HttpExceptionFilter,
 
