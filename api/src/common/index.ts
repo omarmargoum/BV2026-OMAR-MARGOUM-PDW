@@ -1,8 +1,8 @@
 
-export * from './config/index';
+export * from './config/index.js';
 
-export * from './database/index';
+export * from './database/index.js';
 
-export * from './logging/index';
+export * from './logging/index.js';
 
-export * from './api/index';
+export * from './api/index.js';

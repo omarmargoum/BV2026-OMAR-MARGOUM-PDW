@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { AppMode } from "../enum/app-mode.enum";
-import { LogLevel } from "../enum/log-level.enum";
+import { AppMode } from "../enum/app-mode.enum.js";
+import { LogLevel } from "../enum/log-level.enum.js";
 
 const environmentValidation = z.object({
   APP_PORT: z.coerce.number().int().min(1).max(65535).default(3000),

@@ -6,13 +6,13 @@ import{
 }   from '@nestjs/typeorm';
 import {
    AccountService 
-  } from './account.service';
+  } from './account.service.js';
 import{
   AccountEntity
 } from './data/index.js';
 import { 
   AccountController 
-} from './account.controller';
+} from './account.controller.js';
 
 @Module({
   imports: [

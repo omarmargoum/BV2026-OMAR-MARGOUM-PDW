@@ -1,2 +1,2 @@
-export * from './api-validation-error';
-export * from './api-response';
+export * from './api-validation-error.js';
+export * from './api-response.js';

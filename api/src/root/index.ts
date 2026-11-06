@@ -1,2 +1,2 @@
-export * from './app.module';
-export * from './bootstrap/index';
+export * from './app.module.js';
+export * from './bootstrap/index.js';

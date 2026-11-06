@@ -1,1 +1,1 @@
-export * from './account-status.enum';
+export * from './account-status.enum.js';

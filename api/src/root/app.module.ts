@@ -7,10 +7,10 @@ import {
 } from '../feature/index.js';
 import {
   AppConfigModule,
-} from '../common/config/index';
+} from '../common/config/index.js';
 import {
   DatabaseModule,
-} from '../common/database/index';
+} from '../common/database/index.js';
 import {
   ApiModule,
   ApiResponseInterceptor,
@@ -20,11 +20,11 @@ import {
 
 import {
   LoggingModule,
-} from '../common/logging/index';
+} from '../common/logging/index.js';
 import {
   AuthenticationModule,
   HealthModule,
-} from '../core/index';
+} from '../core/index.js';
 @Module({
   imports: [
     AppConfigModule,

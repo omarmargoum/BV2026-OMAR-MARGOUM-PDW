@@ -1,1 +1,1 @@
-export * from './application-bootstrap';
+export * from './application-bootstrap.js';

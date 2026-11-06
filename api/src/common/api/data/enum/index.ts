@@ -1,1 +1,1 @@
-export * from './api-code-response.enum';
+export * from './api-code-response.enum.js';
