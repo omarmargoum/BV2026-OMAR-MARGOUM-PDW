@@ -1,8 +1,13 @@
 import 'dotenv/config';
 
 import {
+  dirname,
   join,
 } from 'node:path';
+
+import {
+  fileURLToPath,
+} from 'node:url';
 
 import {
   DataSource,
@@ -27,7 +32,15 @@ import {
 import {
   AccountEntity,
 } from '../../feature/account/data/entity/account.entity.js';
+const currentFilePath =
+  fileURLToPath(
+    import.meta.url,
+  );
 
+const currentDirectory =
+  dirname(
+    currentFilePath,
+  );
 const requiredEnvironmentValue = (
   key: string,
 ): string => {
@@ -89,14 +102,14 @@ const options:
 
   entities: [
     join(
-      __dirname,
+      currentDirectory,
       '../../**/*.entity.js',
     ),
   ],
 
   migrations: [
     join(
-      __dirname,
+      currentDirectory,
       'migration/*.js',
     ),
   ],

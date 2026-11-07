@@ -1,29 +1,79 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import {
+  afterAll,
+  beforeAll,
+  describe,
+  expect,
+  it,
+} from '@jest/globals';
+
+import type {
+  INestApplication,
+} from '@nestjs/common';
+
+import {
+  Test,
+  type TestingModule,
+} from '@nestjs/testing';
+
 import request from 'supertest';
-import { App } from 'supertest/types';
-import { AppModule } from './../src/app.module';
 
-describe('AppController (e2e)', () => {
-  let app: INestApplication<App>;
+import {
+  HealthModule,
+} from '../src/core/health/index.js';
 
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
+describe(
+  'Health API E2E',
+  (): void => {
+    let app:
+      INestApplication;
 
-    app = moduleFixture.createNestApplication();
-    await app.init();
-  });
+    beforeAll(
+      async (): Promise<void> => {
+        const moduleFixture:
+          TestingModule =
+          await Test
+            .createTestingModule({
+              imports: [
+                HealthModule,
+              ],
+            })
+            .compile();
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
-  });
+        app =
+          moduleFixture
+            .createNestApplication();
 
-  afterEach(async () => {
-    await app.close();
-  });
-});
+        await app.init();
+      },
+    );
+
+    afterAll(
+      async (): Promise<void> => {
+        await app.close();
+      },
+    );
+
+    it(
+      'GET /health/live doit retourner 200',
+      async (): Promise<void> => {
+        const response =
+          await request(
+            app.getHttpServer(),
+          )
+            .get(
+              '/health/live',
+            )
+            .expect(200);
+
+        expect(
+          response.body,
+        ).toEqual(
+          expect.objectContaining({
+            status:
+              expect.any(String),
+          }),
+        );
+      },
+    );
+  },
+);
