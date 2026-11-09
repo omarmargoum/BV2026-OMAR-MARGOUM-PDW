@@ -1,4 +1,4 @@
-import 'dotenv/config';
+﻿import 'dotenv/config';
 
 import {
   dirname,
@@ -31,7 +31,7 @@ import {
 
 import {
   AccountEntity,
-} from '../../feature/account/data/entity/account.entity.js';
+} from '../../core/account/data/entity/account.entity.js';
 const currentFilePath =
   fileURLToPath(
     import.meta.url,

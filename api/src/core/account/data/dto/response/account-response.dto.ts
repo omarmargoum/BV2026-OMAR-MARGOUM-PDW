@@ -4,11 +4,11 @@ import {
 
 import {
   AccountEntity,
-} from '../entity/index.js';
+} from '../../entity/index.js';
 
 import {
   AccountStatus,
-} from '../enum/index.js';
+} from '../../enum/index.js';
 
 export class AccountResponseDto {
   @ApiProperty({

@@ -1,4 +1,4 @@
-import {
+﻿import {
   beforeEach,
   describe,
   expect,
@@ -27,7 +27,7 @@ import {
 import {
   AccountEntity,
   AccountStatus,
-} from '../../../feature/account/data/index.js';
+} from '../../../core/account/data/index.js';
 
 import {
   PasswordCredentialService,

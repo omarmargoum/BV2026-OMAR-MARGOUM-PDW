@@ -1,4 +1,4 @@
-import {
+﻿import {
   Column,
   Entity,
   Index,
@@ -12,7 +12,7 @@ import {
 
 import {
   AccountEntity,
-} from '../../../../feature/account/data/index.js';
+} from '../../../../core/account/data/index.js';
 
 @Entity({
   name: 'password_credential',

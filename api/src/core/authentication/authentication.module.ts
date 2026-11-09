@@ -1,4 +1,4 @@
-import {
+﻿import {
   Module,
 } from '@nestjs/common';
 
@@ -10,7 +10,7 @@ import {
 } from './authentication.controller.js';
 import {
     AccountEntity,
-} from '../../feature/account/data/index.js';
+} from '../../core/account/data/index.js';
 import {
   APP_GUARD,
 } from '@nestjs/core';

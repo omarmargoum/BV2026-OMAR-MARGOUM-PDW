@@ -1,4 +1,4 @@
-import {
+﻿import {
   Controller,
   Get,
   Param,
@@ -15,11 +15,11 @@ import {
 
 import {
   AccountService,
-} from './account.service.js';
+} from '../account.service.js';
 
 import {
   AccountResponseDto,
-} from './data/index.js';
+} from '../data/index.js';
 
 @ApiBearerAuth()
 @ApiTags('Account')

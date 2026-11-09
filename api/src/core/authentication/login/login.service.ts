@@ -1,4 +1,4 @@
-import {
+﻿import {
   HttpStatus,
   Injectable,
 } from '@nestjs/common';
@@ -20,7 +20,7 @@ import {
   AccountEntity,
   AccountResponseDto,
   AccountStatus,
-} from '../../../feature/account/data/index.js';
+} from '../../../core/account/data/index.js';
 
 import {
   PasswordCredentialService,

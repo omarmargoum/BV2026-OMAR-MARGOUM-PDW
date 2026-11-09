@@ -12,7 +12,7 @@ import{
 } from './data/index.js';
 import { 
   AccountController 
-} from './account.controller.js';
+} from './controller/account.controller.js';
 
 @Module({
   imports: [

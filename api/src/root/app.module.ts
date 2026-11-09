@@ -4,7 +4,7 @@ import {
 
 import {
   AccountModule,
-} from '../feature/index.js';
+} from '../core/index.js';
 import {
   AppConfigModule,
 } from '../common/config/index.js';

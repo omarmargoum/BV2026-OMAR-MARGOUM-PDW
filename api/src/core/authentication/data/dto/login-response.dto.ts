@@ -1,10 +1,10 @@
-import {
+﻿import {
   ApiProperty,
 } from '@nestjs/swagger';
 
 import {
   AccountResponseDto,
-} from '../../../../feature/account/data/index.js';
+} from '../../../../core/account/data/index.js';
 
 export class LoginResponseDto {
   @ApiProperty({
