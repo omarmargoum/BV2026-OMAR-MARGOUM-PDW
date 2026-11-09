@@ -1,14 +1,56 @@
 export enum ApiCodeResponse {
- 
-  CommonSuccess = 'api.common.success',
-  CommonError = 'api.common.error',
-  CommonValidationError= 'api.common.validation.error',
-  AccountNotFound = 'api.account.not.found',
-  AuthIdentifierAlreadyExists ='api.auth.identifier.already-exists',
-  AuthRegistrationIdentifierUnavailable = 'api.auth.registration.identifier.unavailable',
-  AuthRefreshTokenInvalid ='api.auth.refresh-token.invalid',
-  AuthLoginInvalidCredentials = 'api.auth.login.invalid-credentials',
-  AuthLogoutSuccess = 'api.auth.logout.success',
-  AuthAccessUnauthorized = 'api.auth.access.unauthorized',
-  AuthRefreshTokenReuseDetected ='api.auth.refresh-token.reuse-detected', 
+  CommonSuccess ='api.common.success',
+
+  CommonError ='api.common.error',
+
+  CommonValidationError ='api.common.validation-error',
+
+  CommonInvalidIdentifier ='api.common.invalid-identifier',
+
+  AuthRegistrationSuccess ='api.auth.register.success',
+
+  AuthLoginSuccess ='api.auth.login.success',
+
+  AuthInvalidCredentials ='api.auth.invalid-credentials',
+
+  AuthEmailAlreadyUsed ='api.auth.email-already-used',
+
+  AuthPasswordPolicyInvalid ='api.auth.password-policy-invalid',
+
+  AuthUnauthorized ='api.auth.unauthorized',
+
+  AuthRefreshSuccess ='api.auth.refresh.success',
+
+  AuthRefreshInvalid ='api.auth.refresh-invalid',
+
+  AuthLogoutSuccess ='api.auth.logout.success',
+
+  AuthLogoutAllSuccess ='api.auth.logout-all.success',
+
+  AuthCsrfInvalid ='api.security.csrf-invalid',
+
+  AuthOriginInvalid ='api.security.origin-invalid',
+
+  AccountMeSuccess ='api.account.me.success',
+
+  AccountNotFound ='api.account.not-found',
+    /**
+   * Compatibilité temporaire.
+   * À supprimer après migration de core/auth.
+   */
+  AuthLoginInvalidCredentials =
+    'api.auth.invalid-credentials',
+
+  AuthAccessUnauthorized =
+    'api.auth.unauthorized',
+
+  AuthRefreshTokenInvalid =
+    'api.auth.refresh-invalid',
+
+  AuthRefreshTokenReuseDetected =
+    'api.auth.refresh-invalid',
+    AuthRegistrationIdentifierUnavailable =
+    'api.auth.register.error.identifier.unavailable',
+  AuthRegistrationEmailAlreadyUsed =
+    'api.auth.register.error.email.already-used'
 }

@@ -12,8 +12,7 @@ import {
   DatabaseModule,
 } from '../common/database/index.js';
 import {
-  ApiModule,
-  ApiResponseInterceptor,
+  ApiInterceptor,
   HttpExceptionFilter,
 
 } from '../common/api/index.js';
@@ -32,12 +31,12 @@ import {
     DatabaseModule,
     AuthenticationModule,
     HealthModule,
-    ApiModule,
+    
     AccountModule,
   ],
   providers: [
     HttpExceptionFilter,
-    ApiResponseInterceptor,
+    ApiInterceptor,
   ],
 })
 export class AppModule {}

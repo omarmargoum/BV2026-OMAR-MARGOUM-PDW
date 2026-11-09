@@ -8,29 +8,20 @@ import {
 } from '@nestjs/typeorm';
 
 import {
-  AppConfigModule,
-  EnvService,
-} from '../config/index.js';
-
-import {
-  createNestTypeOrmOptions,
-} from './nest-typeorm-options.factory.js';
+  TypeOrmOptionsFactory,
+} from './typeorm/typeorm-options.factory.js';
 
 @Global()
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      imports: [
-        AppConfigModule,
-      ],
-
-      inject: [
-        EnvService,
-      ],
-
-      useFactory:
-        createNestTypeOrmOptions,
+      useClass:
+        TypeOrmOptionsFactory,
     }),
+  ],
+
+  providers: [
+    TypeOrmOptionsFactory,
   ],
 
   exports: [

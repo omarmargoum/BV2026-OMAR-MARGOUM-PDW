@@ -1,5 +1,5 @@
 import {
-  ArgumentsHost,
+  type ArgumentsHost,
   Catch,
   type ExceptionFilter,
   HttpException,
@@ -38,7 +38,8 @@ export class HttpExceptionFilter
   implements ExceptionFilter
 {
   constructor(
-    private readonly logger: PinoLogger,
+    private readonly logger:
+      PinoLogger,
   ) {
     this.logger.setContext(
       HttpExceptionFilter.name,
@@ -59,10 +60,14 @@ export class HttpExceptionFilter
       context.getRequest<Request>();
 
     const statusCode =
-      this.getStatusCode(exception);
+      this.getStatusCode(
+        exception,
+      );
 
     const body =
-      this.toApiResponse(exception);
+      this.toApiResponse(
+        exception,
+      );
 
     this.logException(
       exception,
@@ -80,7 +85,8 @@ export class HttpExceptionFilter
     exception: unknown,
   ): HttpStatus {
     if (
-      exception instanceof HttpException
+      exception instanceof
+      HttpException
     ) {
       return exception.getStatus();
     }
@@ -93,15 +99,20 @@ export class HttpExceptionFilter
     exception: unknown,
   ): ApiResponse<unknown> {
     if (
-      exception instanceof ApiException
+      exception instanceof
+      ApiException
     ) {
       const apiException:
         ApiException<unknown> =
-          exception;
+        exception;
 
       return ApiResponse.error({
-        code: apiException.apiCode,
-        data: apiException.apiData,
+        code:
+          apiException.apiCode,
+
+        data:
+          apiException.apiData,
+
         validationErrors:
           apiException
             .apiValidationErrors,
@@ -109,17 +120,20 @@ export class HttpExceptionFilter
     }
 
     if (
-      exception instanceof HttpException
+      exception instanceof
+      HttpException
     ) {
       return ApiResponse.error({
         code:
-          ApiCodeResponse.CommonError,
+          ApiCodeResponse
+            .CommonError,
       });
     }
 
     return ApiResponse.error({
       code:
-        ApiCodeResponse.CommonError,
+        ApiCodeResponse
+          .CommonError,
     });
   }
 
@@ -130,37 +144,68 @@ export class HttpExceptionFilter
     code: string,
   ): void {
     const requestId =
-      typeof request.id === 'string'
+      typeof request.id ===
+        'string'
         ? request.id
         : undefined;
 
     const exceptionName =
       exception instanceof Error
-        ? exception.constructor.name
+        ? exception
+            .constructor
+            .name
         : typeof exception;
 
-    const logContext = {
-      category: LogCategory.Error,
-      requestId,
-      code,
-      statusCode,
-      method: request.method,
+    const logMessage =
+      exception instanceof
+        ApiException
+        ? exception.logMessage
+        : undefined;
 
-      // `path` exclut la query string.
-      // Cela évite qu’une valeur sensible non
-      // masquée dans l’URL fuite dans les logs.
-      path: request.path,
+    const logContext = {
+      category:
+        LogCategory.Error,
+
+      requestId,
+
+      code,
+
+      statusCode,
+
+      method:
+        request.method,
+
+      /*
+       * request.path ne contient pas
+       * la query string.
+       *
+       * Cela évite de journaliser
+       * accidentellement des paramètres
+       * sensibles présents dans l’URL.
+       */
+      path:
+        request.path,
 
       exceptionName,
+
+      ...(
+        logMessage
+          ? {
+              logMessage,
+            }
+          : {}
+      ),
     };
 
     if (
       statusCode >=
-      HttpStatus.INTERNAL_SERVER_ERROR
+      HttpStatus
+        .INTERNAL_SERVER_ERROR
     ) {
       this.logger.error(
         {
           ...logContext,
+
           event:
             'error.request.unhandled',
 
@@ -169,6 +214,7 @@ export class HttpExceptionFilter
               ? exception
               : undefined,
         },
+
         'Unhandled HTTP exception',
       );
 
@@ -178,9 +224,11 @@ export class HttpExceptionFilter
     this.logger.warn(
       {
         ...logContext,
+
         event:
           'error.request.handled',
       },
+
       'Handled HTTP exception',
     );
   }

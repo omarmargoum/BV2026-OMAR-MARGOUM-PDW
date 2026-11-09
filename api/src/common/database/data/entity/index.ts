@@ -1,1 +1,0 @@
-export * from './base-persistence.entity.js';

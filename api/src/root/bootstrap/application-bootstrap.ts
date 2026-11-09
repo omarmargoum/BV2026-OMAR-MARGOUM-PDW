@@ -12,7 +12,7 @@ import {
 } from 'nestjs-pino';
 
 import {
-  ApiResponseInterceptor,
+  ApiInterceptor,
   HttpExceptionFilter,
   setupSwagger,
   ValidationException,
@@ -27,7 +27,7 @@ export const configureApplication = (
     app.get(HttpExceptionFilter);
 
   const responseInterceptor =
-    app.get(ApiResponseInterceptor);
+    app.get(ApiInterceptor);
 
   app.useLogger(logger);
 
@@ -38,12 +38,13 @@ export const configureApplication = (
       forbidNonWhitelisted: true,
       transform: true,
       exceptionFactory:(
-        errors: ValidationError[],
-      ): ValidationException => 
+        errors
+      ) => 
           ValidationException
           .fromClassValidatorErrors(
             errors, 
-            HttpStatus.UNPROCESSABLE_ENTITY,
+            HttpStatus
+            .UNPROCESSABLE_ENTITY,
       ),
     }),
   );

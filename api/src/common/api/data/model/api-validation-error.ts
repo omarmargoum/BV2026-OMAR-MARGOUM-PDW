@@ -1,4 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { 
+  ApiProperty 
+} from '@nestjs/swagger';
 
 export class ApiValidationError {
   @ApiProperty({
@@ -10,13 +12,18 @@ export class ApiValidationError {
     example: [
       'api.auth.register.error.email.invalid',
     ],
-    type: [String],
+    type: [
+      String
+    ],
   })
   messages!: string[];
 
   @ApiProperty({
     required: false,
-    type: () => [ApiValidationError],
+    type: () => [
+      ApiValidationError
+    ],
   })
-  children?: ApiValidationError[];
+  children?: 
+  ApiValidationError[];
 }

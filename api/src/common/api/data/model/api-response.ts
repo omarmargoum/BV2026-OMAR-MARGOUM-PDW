@@ -1,4 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { 
+  ApiProperty 
+} from '@nestjs/swagger';
 
 import {
   ApiCodeResponse,
@@ -25,9 +27,12 @@ export class ApiResponse<T> {
   data!: T | null;
 
   @ApiProperty({
-    type: () => [ApiValidationError],
+    type: () => [
+      ApiValidationError
+    ],
   })
-  validationErrors!: ApiValidationError[];
+  validationErrors!: 
+  ApiValidationError[];
 
   static success<T>(
     data: T,

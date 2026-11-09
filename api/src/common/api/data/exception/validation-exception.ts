@@ -2,7 +2,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 
-import {
+import type {
   ValidationError,
 } from 'class-validator';
 
@@ -24,78 +24,123 @@ export class ValidationException
   constructor(
     validationErrors:
       ApiValidationError[],
-    statusCode: HttpStatus =
-      HttpStatus.UNPROCESSABLE_ENTITY,
+
+    statusCode:
+      HttpStatus =
+        HttpStatus
+          .UNPROCESSABLE_ENTITY,
   ) {
     super({
       statusCode,
+
       code:
-        ApiCodeResponse.CommonValidationError,
+        ApiCodeResponse
+          .CommonValidationError,
+
       data: null,
+
       validationErrors,
+
       logMessage:
         'Request validation failed',
     });
   }
 
   static fromClassValidatorErrors(
-    errors: ValidationError[],
-    statusCode: HttpStatus,
+    errors:
+      ValidationError[],
+
+    statusCode:
+      HttpStatus,
   ): ValidationException {
     return new ValidationException(
-      errors.map((error) =>
-        ValidationException.mapValidationError(
-          error,
-        ),
+      errors.map(
+        (
+          error:
+            ValidationError,
+        ) =>
+          ValidationException
+            .mapValidationError(
+              error,
+            ),
       ),
+
       statusCode,
     );
   }
 
   private static mapValidationError(
-    error: ValidationError,
+    error:
+      ValidationError,
   ): ApiValidationError {
-    const children = error.children?.map(
-      (child) =>
-        ValidationException.mapValidationError(
-          child,
-        ),
-    );
+    const children =
+      error.children?.map(
+        (
+          child:
+            ValidationError,
+        ) =>
+          ValidationException
+            .mapValidationError(
+              child,
+            ),
+      );
 
     return {
-      property: error.property,
+      property:
+        error.property,
 
-      messages: Object.entries(
-        error.constraints ?? {},
-      ).map(([constraint, message]) =>
-        ValidationException
-          .toMachineReadableMessage(
+      messages:
+        Object.entries(
+          error.constraints ??
+            {},
+        ).map(
+          ([
             constraint,
             message,
-          ),
-      ),
+          ]): string =>
+            ValidationException
+              .toMachineReadableMessage(
+                constraint,
+                message,
+              ),
+        ),
 
-      ...(children?.length
-        ? { children }
-        : {}),
+      ...(
+        children?.length
+          ? {
+              children,
+            }
+          : {}
+      ),
     };
   }
 
   private static toMachineReadableMessage(
-    constraint: string,
-    message: string,
+    constraint:
+      string,
+
+    message:
+      string,
   ): string {
-    if (message.startsWith('api.')) {
+    if (
+      message.startsWith(
+        'api.',
+      )
+    ) {
       return message;
     }
 
-    const kebabConstraint = constraint
-      .replace(
-        /([a-z])([A-Z])/g,
-        '$1-$2',
-      )
-      .replace(/_/g, '-')
-      .toLowerCase();
+    const kebabConstraint =
+      constraint
+        .replace(
+          /([a-z])([A-Z])/g,
+          '$1-$2',
+        )
+        .replace(
+          /_/g,
+          '-',
+        )
+        .toLowerCase();
 
     return (
       'api.common.validation.error.' +

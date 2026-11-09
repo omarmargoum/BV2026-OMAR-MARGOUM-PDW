@@ -8,7 +8,7 @@ import {
 
 import {
   createUlid,
-} from '../util/index.js';
+} from '../identifier/ulid.util.js';
 
 export abstract class BasePersistenceEntity {
   @PrimaryColumn({

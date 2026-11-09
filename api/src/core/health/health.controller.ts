@@ -8,13 +8,16 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-
+import{
+  SkipApiTransform,
+} from '../../common/api/index.js';
 import {
   HealthService,
 } from './health.service.js';
 import {
   Public,
 }from '../authentication/decorator/index.js'
+@SkipApiTransform()
 @Public()  
 @ApiTags('Health')
 @Controller('health')

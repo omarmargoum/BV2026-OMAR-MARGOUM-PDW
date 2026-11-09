@@ -5,34 +5,45 @@ import {
 
 import {
   ApiCodeResponse,
-} from '../enum/index.js';
+} from '../enum/api-code-response.enum.js';
 
 import {
   ApiResponse,
+} from '../model/api-response.js';
+
+import type {
   ApiValidationError,
-} from '../model/index.js';
+} from '../model/api-validation-error.js';
 
 export type ApiExceptionOptions<
   TData = unknown,
 > = {
   statusCode?: HttpStatus;
+
   code?: string;
+
   data?: TData | null;
-  validationErrors?: ApiValidationError[];
+
+  validationErrors?:
+    ApiValidationError[];
+
   logMessage?: string;
 };
 
 export class ApiException<
   TData = unknown,
 > extends HttpException {
-  readonly apiCode: string;
+  readonly apiCode:
+    string;
 
-  readonly apiData: TData | null;
+  readonly apiData:
+    TData | null;
 
   readonly apiValidationErrors:
     ApiValidationError[];
 
-  readonly logMessage?: string;
+  readonly logMessage?:
+    string;
 
   constructor(
     options:
@@ -49,10 +60,12 @@ export class ApiException<
           ApiCodeResponse.CommonError,
 
         data:
-          options.data ?? null,
+          options.data ??
+          null,
 
         validationErrors:
-          options.validationErrors ?? [],
+          options.validationErrors ??
+          [],
       });
 
     super(
@@ -60,10 +73,15 @@ export class ApiException<
       statusCode,
     );
 
-    this.apiCode = response.code;
-    this.apiData = response.data;
+    this.apiCode =
+      response.code;
+
+    this.apiData =
+      response.data;
+
     this.apiValidationErrors =
       response.validationErrors;
+
     this.logMessage =
       options.logMessage;
   }

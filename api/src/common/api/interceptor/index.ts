@@ -1,1 +1,1 @@
-export * from './api-response.interceptor.js';
+export * from './api.interceptor.js';
