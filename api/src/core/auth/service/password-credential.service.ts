@@ -1,4 +1,4 @@
-import {
+﻿import {
   Injectable,
 } from '@nestjs/common';
 
@@ -15,8 +15,8 @@ import {
 } from '../data/entity/password-credential.entity.js';
 
 import {
-  PasswordHashingService,
-} from './password-hashing.service.js';
+  PasswordHasherService,
+} from './password-hasher.service.js';
 
 @Injectable()
 export class PasswordCredentialService {
@@ -28,7 +28,7 @@ export class PasswordCredentialService {
       Repository<PasswordCredentialEntity>,
 
     private readonly passwordHashingService:
-      PasswordHashingService,
+      PasswordHasherService,
   ) {}
 
   async createCredential(

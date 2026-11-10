@@ -20,8 +20,8 @@ import {
 } from '../data/index.js';
 
 import {
-  PasswordHashingService,
-} from './password-hashing.service.js';
+  PasswordHasherService,
+} from './password-hasher.service.js';
 
 import {
   PasswordCredentialService,
@@ -59,7 +59,7 @@ type CredentialRepositoryMock = {
   >;
 };
 
-type PasswordHashingServiceMock = {
+type PasswordHasherServiceMock = {
   hashPassword: ReturnType<
     typeof jest.fn
   >;
@@ -83,7 +83,7 @@ describe(
       CredentialRepositoryMock;
 
     let hashingService:
-      PasswordHashingServiceMock;
+      PasswordHasherServiceMock;
 
     let queryBuilder:
       QueryBuilderMock;
@@ -143,7 +143,7 @@ describe(
 
                 {
                   provide:
-                    PasswordHashingService,
+                    PasswordHasherService,
                   useValue:
                     hashingService,
                 },
@@ -566,3 +566,5 @@ describe(
     );
   },
 );
+
+

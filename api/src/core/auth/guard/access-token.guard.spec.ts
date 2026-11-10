@@ -34,13 +34,13 @@ import type {
 } from '../data/index.js';
 
 import {
-  SessionService,
-} from '../service/session.service.js';
+  AuthSessionService,
+} from '../service/auth-session.service.js';
 
 import {
-  AuthTokenService,
+  TokenCryptoService,
   type AccessTokenPayload,
-} from '../service/auth-token.service.js';
+} from '../service/token-crypto.service.js';
 
 import {
   AccessTokenGuard,
@@ -56,12 +56,12 @@ type ReflectorMock = {
     ReturnType<typeof jest.fn>;
 };
 
-type AuthTokenServiceMock = {
+type TokenCryptoServiceMock = {
   verifyAccessToken:
     ReturnType<typeof jest.fn>;
 };
 
-type SessionServiceMock = {
+type AuthAuthSessionServiceMock = {
   findActiveSession:
     ReturnType<typeof jest.fn>;
 };
@@ -75,11 +75,11 @@ describe(
     let reflector:
       ReflectorMock;
 
-    let authTokenService:
-      AuthTokenServiceMock;
+    let tokenCryptoService:
+      TokenCryptoServiceMock;
 
-    let sessionService:
-      SessionServiceMock;
+    let authSessionService:
+      AuthAuthSessionServiceMock;
 
     let request:
       AuthenticatedRequest;
@@ -142,7 +142,7 @@ describe(
             `Bearer ${accessToken}`,
         };
 
-        authTokenService
+        tokenCryptoService
           .verifyAccessToken
           .mockImplementation(
             async (): Promise<
@@ -156,7 +156,7 @@ describe(
             }),
           );
 
-        sessionService
+        authSessionService
           .findActiveSession
           .mockImplementation(
             async () => ({
@@ -192,12 +192,12 @@ describe(
             jest.fn(),
         };
 
-        authTokenService = {
+        tokenCryptoService = {
           verifyAccessToken:
             jest.fn(),
         };
 
-        sessionService = {
+        authSessionService = {
           findActiveSession:
             jest.fn(),
         };
@@ -228,18 +228,18 @@ describe(
 
                 {
                   provide:
-                    AuthTokenService,
+                    TokenCryptoService,
 
                   useValue:
-                    authTokenService,
+                    tokenCryptoService,
                 },
 
                 {
                   provide:
-                    SessionService,
+                    AuthSessionService,
 
                   useValue:
-                    sessionService,
+                    authSessionService,
                 },
               ],
             })
@@ -274,12 +274,12 @@ describe(
             );
 
             expect(
-              authTokenService
+              tokenCryptoService
                 .verifyAccessToken,
             ).not.toHaveBeenCalled();
 
             expect(
-              sessionService
+              authSessionService
                 .findActiveSession,
             ).not.toHaveBeenCalled();
           },
@@ -337,7 +337,7 @@ describe(
             );
 
             expect(
-              authTokenService
+              tokenCryptoService
                 .verifyAccessToken,
             ).not.toHaveBeenCalled();
           },
@@ -366,7 +366,7 @@ describe(
             );
 
             expect(
-              authTokenService
+              tokenCryptoService
                 .verifyAccessToken,
             ).not.toHaveBeenCalled();
           },
@@ -436,7 +436,7 @@ describe(
                 `Bearer ${accessToken}`,
             };
 
-            authTokenService
+            tokenCryptoService
               .verifyAccessToken
               .mockImplementation(
                 async () => {
@@ -455,7 +455,7 @@ describe(
             );
 
             expect(
-              sessionService
+              authSessionService
                 .findActiveSession,
             ).not.toHaveBeenCalled();
           },
@@ -475,7 +475,7 @@ describe(
                 `Bearer ${accessToken}`,
             };
 
-            authTokenService
+            tokenCryptoService
               .verifyAccessToken
               .mockImplementation(
                 async () => ({
@@ -494,7 +494,7 @@ describe(
             );
 
             expect(
-              sessionService
+              authSessionService
                 .findActiveSession,
             ).not.toHaveBeenCalled();
           },
@@ -514,7 +514,7 @@ describe(
                 `Bearer ${accessToken}`,
             };
 
-            authTokenService
+            tokenCryptoService
               .verifyAccessToken
               .mockImplementation(
                 async () => ({
@@ -534,7 +534,7 @@ describe(
             );
 
             expect(
-              sessionService
+              authSessionService
                 .findActiveSession,
             ).not.toHaveBeenCalled();
           },
@@ -559,7 +559,7 @@ describe(
                 `Bearer ${accessToken}`,
             };
 
-            authTokenService
+            tokenCryptoService
               .verifyAccessToken
               .mockImplementation(
                 async () => ({
@@ -571,7 +571,7 @@ describe(
                 }),
               );
 
-            sessionService
+            authSessionService
               .findActiveSession
               .mockImplementation(
                 async () =>
@@ -587,7 +587,7 @@ describe(
             );
 
             expect(
-              sessionService
+              authSessionService
                 .findActiveSession,
             ).toHaveBeenCalledWith(
               sessionId,
@@ -609,7 +609,7 @@ describe(
                 `Bearer ${accessToken}`,
             };
 
-            authTokenService
+            tokenCryptoService
               .verifyAccessToken
               .mockImplementation(
                 async () => ({
@@ -621,7 +621,7 @@ describe(
                 }),
               );
 
-            sessionService
+            authSessionService
               .findActiveSession
               .mockImplementation(
                 async () => ({
@@ -671,14 +671,14 @@ describe(
             );
 
             expect(
-              authTokenService
+              tokenCryptoService
                 .verifyAccessToken,
             ).toHaveBeenCalledWith(
               accessToken,
             );
 
             expect(
-              sessionService
+              authSessionService
                 .findActiveSession,
             ).toHaveBeenCalledWith(
               sessionId,
@@ -786,4 +786,6 @@ describe(
     );
   },
 );
+
+
 

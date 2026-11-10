@@ -32,8 +32,8 @@ import {
 } from '../data/index.js';
 import {
     type CreateSessionOptions,
-    SessionService,
-} from './session.service.js';
+    AuthSessionService,
+} from './auth-session.service.js';
 import {
   AuthIdentifierService,
 } from './auth-identifier.service.js';
@@ -42,18 +42,18 @@ import {
 } from './refresh-token.service.js';
 
 import {
-  AuthTokenService,
-} from './auth-token.service.js';
+  TokenCryptoService,
+} from './token-crypto.service.js';
 @Injectable()
 export class LoginService {
   constructor(
     @InjectRepository(AccountEntity)
     private readonly accountRepository: Repository<AccountEntity>,
     private readonly passwordCredentialService: PasswordCredentialService,
-    private readonly sessionService: SessionService,
+    private readonly authAuthSessionService: AuthSessionService,
     private readonly authIdentifierService: AuthIdentifierService,
     private readonly refreshTokenService: RefreshTokenService,
-    private readonly authTokenService: AuthTokenService,
+    private readonly tokenCryptoService: TokenCryptoService,
   ) {}
 
   async login(
@@ -101,14 +101,14 @@ export class LoginService {
   }
 
   const session =
-    await this.sessionService
+    await this.authAuthSessionService
       .createSession(
         account.id,
         sessionOptions,
       );
 
   const tokenPair =
-    await this.authTokenService
+    await this.tokenCryptoService
       .generateTokenPair(
         account.id,
         session.id,
@@ -167,4 +167,6 @@ export class LoginService {
     });
   }
 }
+
+
 

@@ -1,6 +1,6 @@
-import {
-  PasswordHashingService,
-} from './password-hashing.service.js';
+﻿import {
+  PasswordHasherService,
+} from './password-hasher.service.js';
 import {
   beforeEach,
   describe,
@@ -9,15 +9,15 @@ import {
 } from '@jest/globals';
 
 describe(
-  'PasswordHashingService',
+  'PasswordHasherService',
   (): void => {
     let service:
-      PasswordHashingService;
+      PasswordHasherService;
 
     beforeEach(
       (): void => {
         service =
-          new PasswordHashingService();
+          new PasswordHasherService();
       },
     );
 

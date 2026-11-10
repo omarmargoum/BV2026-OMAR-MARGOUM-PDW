@@ -14,8 +14,8 @@ import {
 } from '../data/index.js';
 
 import {
-  AuthTokenService,
-} from './auth-token.service.js';
+  TokenCryptoService,
+} from './token-crypto.service.js';
 
 @Injectable()
 export class LogoutService {
@@ -23,15 +23,15 @@ export class LogoutService {
     private readonly dataSource:
       DataSource,
 
-    private readonly authTokenService:
-      AuthTokenService,
+    private readonly tokenCryptoService:
+      TokenCryptoService,
   ) {}
 
   async logout(
     input: LogoutRequestDto,
   ): Promise<LogoutResponseDto> {
     const tokenHash =
-      this.authTokenService
+      this.tokenCryptoService
         .hashRefreshToken(
           input.refreshToken,
         );
@@ -130,3 +130,4 @@ export class LogoutService {
 
     return response; }
 }
+

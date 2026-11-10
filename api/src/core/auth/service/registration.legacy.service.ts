@@ -31,8 +31,8 @@ import {
 } from './auth-identifier.service.js';
 
 import {
-  PasswordHashingService,
-} from './password-hashing.service.js';
+  PasswordHasherService,
+} from './password-hasher.service.js';
 
 @Injectable()
 export class RegistrationService {
@@ -40,9 +40,9 @@ export class RegistrationService {
     private readonly dataSource:
       DataSource,
 
-    private readonly passwordHashingService:
-      PasswordHashingService,
-
+    private readonly passwordHasherService:
+      PasswordHasherService,
+      
     private readonly authIdentifierService:
       AuthIdentifierService,
   ) {}
@@ -57,7 +57,7 @@ export class RegistrationService {
         );
 
     const passwordHash =
-      await this.passwordHashingService
+      await this.passwordHasherService
         .hashPassword(
           input.password,
         );

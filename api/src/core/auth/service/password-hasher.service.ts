@@ -1,4 +1,4 @@
-import {
+﻿import {
   Injectable,
 } from '@nestjs/common';
 
@@ -15,7 +15,7 @@ const ARGON2_PARALLELISM = 1;
 const ARGON2_HASH_LENGTH = 32;
 
 @Injectable()
-export class PasswordHashingService {
+export class PasswordHasherService {
   async hashPassword(
     plainPassword: string,
   ): Promise<string> {

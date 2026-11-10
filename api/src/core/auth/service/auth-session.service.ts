@@ -22,7 +22,7 @@ export type CreateSessionOptions = {
 };
 
 @Injectable()
-export class SessionService {
+export class AuthSessionService {
   constructor(
     @InjectRepository(
       AuthSessionEntity,

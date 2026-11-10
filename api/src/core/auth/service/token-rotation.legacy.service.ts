@@ -23,8 +23,8 @@ import {
 } from '../data/index.js';
 
 import {
-  AuthTokenService,
-} from './auth-token.service.js';
+  TokenCryptoService,
+} from './token-crypto.service.js';
 
 type RotationResult =
   | {
@@ -44,15 +44,15 @@ export class TokenRotationService {
     private readonly dataSource:
       DataSource,
 
-    private readonly authTokenService:
-      AuthTokenService,
+    private readonly tokenCryptoService:
+      TokenCryptoService,
   ) {}
 
   async rotate(
     input: RefreshRequestDto,
   ): Promise<RefreshResponseDto> {
     const currentTokenHash =
-      this.authTokenService
+      this.tokenCryptoService
         .hashRefreshToken(
           input.refreshToken,
         );
@@ -166,7 +166,7 @@ export class TokenRotationService {
           }
 
           const tokenPair =
-            await this.authTokenService
+            await this.tokenCryptoService
               .generateTokenPair(
                 session.accountId,
                 session.id,
@@ -350,3 +350,4 @@ export class TokenRotationService {
     });
   }
 }
+

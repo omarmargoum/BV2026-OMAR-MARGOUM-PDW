@@ -1,4 +1,4 @@
-import {
+﻿import {
   Injectable,
 } from '@nestjs/common';
 
@@ -30,7 +30,7 @@ export type GeneratedTokenPair = {
 };
 
 @Injectable()
-export class AuthTokenService {
+export class TokenCryptoService {
   constructor(
     private readonly jwtService:
       JwtService,

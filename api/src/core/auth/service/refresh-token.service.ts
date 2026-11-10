@@ -17,8 +17,8 @@ import {
 } from '../data/index.js';
 
 import {
-  AuthTokenService,
-} from '../service/auth-token.service.js';
+  TokenCryptoService,
+} from '../service/token-crypto.service.js';
 
 @Injectable()
 export class RefreshTokenService {
@@ -29,8 +29,8 @@ export class RefreshTokenService {
     private readonly refreshTokenRepository:
       Repository<AuthRefreshTokenEntity>,
 
-    private readonly authTokenService:
-      AuthTokenService,
+    private readonly tokenCryptoService:
+      TokenCryptoService,
   ) {}
 
   async createRefreshToken(
@@ -39,7 +39,7 @@ export class RefreshTokenService {
     expiresAt: Date,
   ): Promise<AuthRefreshTokenEntity> {
     const tokenHash =
-      this.authTokenService
+      this.tokenCryptoService
         .hashRefreshToken(
           refreshToken,
         );
@@ -63,7 +63,7 @@ export class RefreshTokenService {
     refreshToken: string,
   ): Promise<AuthRefreshTokenEntity | null> {
     const tokenHash =
-      this.authTokenService
+      this.tokenCryptoService
         .hashRefreshToken(
           refreshToken,
         );
@@ -166,3 +166,4 @@ export class RefreshTokenService {
     return result.affected ?? 0;
   }
 }
+

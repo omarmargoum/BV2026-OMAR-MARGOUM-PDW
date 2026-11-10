@@ -23,12 +23,12 @@ import type {
 } from '../data/index.js';
 
 import {
-  SessionService,
-} from '../service/session.service.js';
+  AuthSessionService,
+} from '../service/auth-session.service.js';
 
 import {
-  AuthTokenService,
-} from '../service/auth-token.service.js';
+  TokenCryptoService,
+} from '../service/token-crypto.service.js';
 
 type AuthenticatedRequest = Request & {
   auth?: AuthContext;
@@ -39,12 +39,12 @@ export class AccessTokenGuard
   implements CanActivate
 {
   constructor(
-    private readonly authTokenService:
-      AuthTokenService,
+    private readonly tokenCryptoService:
+      TokenCryptoService,
     private readonly reflector:
       Reflector,
-    private readonly sessionService:
-      SessionService,
+    private readonly authSessionService:
+        AuthSessionService,
   ) {}
 
   async canActivate(
@@ -80,7 +80,7 @@ export class AccessTokenGuard
 
     try {
       const payload =
-        await this.authTokenService
+        await this.tokenCryptoService
           .verifyAccessToken(
             accessToken,
           );
@@ -94,7 +94,7 @@ export class AccessTokenGuard
       }
 
       const session =
-        await this.sessionService
+        await this.authSessionService
           .findActiveSession(
             payload.sid,
           );
@@ -173,4 +173,6 @@ export class AccessTokenGuard
     });
   }
 }
+
+
 
