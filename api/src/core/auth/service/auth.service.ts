@@ -48,7 +48,9 @@ import {
   AuthSessionService,
   type CreateSessionOptions,
 } from './auth-session.service.js';
-
+import {
+  normalizeEmail,
+} from '../utils/normalize-email.util.js';
 import {
   PasswordCredentialService,
 } from './password-credential.service.js';
@@ -56,7 +58,9 @@ import {
 import {
   PasswordHasherService,
 } from './password-hasher.service.js';
-
+import {
+  PasswordPolicyService,
+} from './password-policy.service.js';
 import {
   RefreshTokenService,
 } from './refresh-token.service.js';
@@ -100,7 +104,8 @@ export class AuthService {
 
     private readonly passwordHasherService:
       PasswordHasherService,
-
+    private readonly passwordPolicyService:
+      PasswordPolicyService,
     private readonly refreshTokenService:
       RefreshTokenService,
 
@@ -112,12 +117,14 @@ export class AuthService {
     input:
       RegisterRequestDto,
   ): Promise<AccountResponseDto> {
-    const normalizedEmail =
-      this.authIdentifierService
-        .normalizeEmail(
-          input.email,
-        );
-
+     const normalizedEmail =
+                normalizeEmail(
+                input.email,
+            );   
+            this.passwordPolicyService
+            .assertValid(
+            input.password,
+            );
     const passwordHash =
       await this.passwordHasherService
         .hashPassword(
@@ -175,7 +182,7 @@ export class AuthService {
                       AccountStatus
                         .Pending,
                   });
-
+                
               const savedAccount =
                 await accountRepository
                   .save(
@@ -200,6 +207,7 @@ export class AuthService {
 
                     verifiedAt:
                       null,
+                      
                   });
 
               await identifierRepository

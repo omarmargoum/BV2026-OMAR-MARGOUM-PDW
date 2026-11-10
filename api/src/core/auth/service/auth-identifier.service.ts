@@ -6,7 +6,9 @@ import {
 import {
   InjectRepository,
 } from '@nestjs/typeorm';
-
+import {
+  normalizeEmail,
+} from '../utils/normalize-email.util.js';
 import {
   Repository,
 } from 'typeorm';
@@ -27,12 +29,12 @@ export class AuthIdentifierService {
   ) {}
 
   normalizeEmail(
-    email: string,
-  ): string {
-    return email
-      .trim()
-      .toLowerCase();
-  }
+  value: string,
+): string {
+  return normalizeEmail(
+    value,
+  );
+}
 
   async createEmailIdentifier(
     accountId: string,
