@@ -78,7 +78,17 @@ export class AuthSessionEntity
     nullable: true,
   })
   ipAddress!: string | null;
+  @Column({
+  name:
+    'csrf_token_hash',
 
+  type:
+    'varchar',
+
+  length:
+    64,
+})
+csrfTokenHash!: string;
   @Column({
     name: 'user_agent',
     type: 'text',

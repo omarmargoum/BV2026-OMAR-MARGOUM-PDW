@@ -98,7 +98,14 @@ export class EnvService {
       AppMode.Development,
     );
   }
-
+  get corsOrigins():
+  string[] {
+  return this.configService
+    .getOrThrow<string[]>(
+      ConfigKey
+        .APP_CORS_ORIGIN,
+    );
+}
   get port(): number {
     const value = this.configService.get<string>(
       ConfigKey.PORT,

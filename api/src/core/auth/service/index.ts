@@ -1,6 +1,7 @@
 ﻿export * from './auth-identifier.service.js';
 export * from './auth.service.js'
 export * from './auth-session.service.js';
+export * from './csrf.service.js';
 export * from './password-credential.service.js';
 export * from './password-hasher.service.js';
 export * from './password-policy.service.js';

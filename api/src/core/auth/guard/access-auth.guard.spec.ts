@@ -43,8 +43,8 @@ import {
 } from '../service/token-crypto.service.js';
 
 import {
-  AccessTokenGuard,
-} from './access-token.guard.js';
+  AccessAuthGuard,
+} from './access-auth.guard.js';
 
 type AuthenticatedRequest =
   Request & {
@@ -67,10 +67,10 @@ type AuthAuthSessionServiceMock = {
 };
 
 describe(
-  'AccessTokenGuard',
+  'AccessAuthGuard',
   (): void => {
     let guard:
-      AccessTokenGuard;
+      AccessAuthGuard;
 
     let reflector:
       ReflectorMock;
@@ -216,7 +216,7 @@ describe(
           await Test
             .createTestingModule({
               providers: [
-                AccessTokenGuard,
+                AccessAuthGuard,
 
                 {
                   provide:
@@ -246,8 +246,8 @@ describe(
             .compile();
 
         guard =
-          module.get<AccessTokenGuard>(
-            AccessTokenGuard,
+          module.get<AccessAuthGuard>(
+            AccessAuthGuard,
           );
       },
     );
@@ -786,6 +786,7 @@ describe(
     );
   },
 );
+
 
 
 

@@ -35,7 +35,7 @@ type AuthenticatedRequest = Request & {
 };
 
 @Injectable()
-export class AccessTokenGuard
+export class AccessAuthGuard
   implements CanActivate
 {
   constructor(
@@ -173,6 +173,7 @@ export class AccessTokenGuard
     });
   }
 }
+
 
 
 

@@ -19,9 +19,54 @@ const booleanStringSchema =
     .default(
       'false',
     );
+const corsOriginsSchema =
+  z
+    .string()
+    .trim()
+    .min(
+      1,
+      'La variable APP_CORS_ORIGIN est obligatoire.',
+    )
+    .transform(
+      (
+        value,
+        context,
+      ): string[] => {
+        const origins =
+          value
+            .split(',')
+            .map(
+              (
+                origin,
+              ): string =>
+                origin.trim(),
+            )
+            .filter(Boolean);
 
+        if (
+          origins.length ===
+            0 ||
+          origins.includes('*')
+        ) {
+          context.addIssue({
+            code:
+              z.ZodIssueCode
+                .custom,
+
+            message:
+              'APP_CORS_ORIGIN doit contenir une liste explicite et ne peut pas utiliser *.',
+          });
+
+          return z.NEVER;
+        }
+
+        return origins;
+      },
+    );
 export const environmentValidation =
   z.object({
+    APP_CORS_ORIGIN:
+    corsOriginsSchema,
     NODE_ENV:
       z
         .nativeEnum(

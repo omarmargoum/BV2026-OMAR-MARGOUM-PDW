@@ -1,1 +1,2 @@
-export * from './access-token.guard.js';
+﻿export * from './access-auth.guard.js';
+export * from './origin.guard.js';
