@@ -29,6 +29,7 @@ import {
   ],
 
   exports: [
+    TypeOrmModule,
     AccountService,
   ],
 })

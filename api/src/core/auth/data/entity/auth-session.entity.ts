@@ -94,5 +94,16 @@ csrfTokenHash!: string;
     type: 'text',
     nullable: true,
   })
+  @Column({
+  name:
+    'access_version',
+
+  type:
+    'integer',
+
+  default:
+    1,
+})
+accessVersion!: number;
   userAgent!: string | null;
 }

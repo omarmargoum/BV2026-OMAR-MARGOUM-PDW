@@ -13,25 +13,18 @@ import {
   DataSource,
   type DataSourceOptions,
 } from 'typeorm';
-import {
-  AuthIdentifierEntity,
-} from '../../core/authentication/data/entity/auth-identifier.entity.js';
-
-import {
-  AuthRefreshTokenEntity,
-} from '../../core/authentication/data/entity/auth-refresh-token.entity.js';
-
-import {
-  AuthSessionEntity,
-} from '../../core/authentication/data/entity/auth-session.entity.js';
-
-import {
-  PasswordCredentialEntity,
-} from '../../core/authentication/data/entity/password-credential.entity.js';
 
 import {
   AccountEntity,
-} from '../../core/account/data/entity/account.entity.js';
+} from '../src/core/account/data/index.js';
+
+import {
+  AuthIdentifierEntity,
+  AuthRefreshTokenEntity,
+  AuthSessionEntity,
+  PasswordCredentialEntity,
+} from '../src/core/auth/data/index.js';
+
 const currentFilePath =
   fileURLToPath(
     import.meta.url,
@@ -41,7 +34,8 @@ const currentDirectory =
   dirname(
     currentFilePath,
   );
-const requiredEnvironmentValue = (
+
+const getRequiredEnvironmentValue = (
   key: string,
 ): string => {
   const value =
@@ -63,7 +57,9 @@ const databasePort =
   );
 
 if (
-  !Number.isInteger(databasePort) ||
+  !Number.isInteger(
+    databasePort,
+  ) ||
   databasePort <= 0
 ) {
   throw new Error(
@@ -73,10 +69,11 @@ if (
 
 const options:
   DataSourceOptions = {
-  type: 'postgres',
+  type:
+    'postgres',
 
   host:
-    requiredEnvironmentValue(
+    getRequiredEnvironmentValue(
       'DB_HOST',
     ),
 
@@ -84,42 +81,45 @@ const options:
     databasePort,
 
   username:
-    requiredEnvironmentValue(
+    getRequiredEnvironmentValue(
       'DB_USERNAME',
     ),
 
   password:
-    requiredEnvironmentValue(
+    getRequiredEnvironmentValue(
       'DB_PASSWORD',
     ),
 
   database:
     process.env
       .MIGRATION_DB_DATABASE ??
-    requiredEnvironmentValue(
+    getRequiredEnvironmentValue(
       'DB_DATABASE',
     ),
 
   entities: [
-    join(
-      currentDirectory,
-      '../../**/*.entity.js',
-    ),
+    AccountEntity,
+    AuthIdentifierEntity,
+    AuthRefreshTokenEntity,
+    AuthSessionEntity,
+    PasswordCredentialEntity,
   ],
 
   migrations: [
     join(
       currentDirectory,
-      'migration/*.js',
+      'migrations/*.js',
     ),
   ],
 
   migrationsTableName:
     'typeorm_migration',
 
-  synchronize: false,
+  synchronize:
+    false,
 
-  migrationsRun: false,
+  migrationsRun:
+    false,
 
   logging: [
     'error',
@@ -127,7 +127,9 @@ const options:
   ],
 };
 
-const migrationDataSource =
-  new DataSource(options);
+const typeormDataSource =
+  new DataSource(
+    options,
+  );
 
-export default migrationDataSource;
+export default typeormDataSource;

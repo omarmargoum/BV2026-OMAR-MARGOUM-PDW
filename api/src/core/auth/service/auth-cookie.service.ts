@@ -4,6 +4,7 @@ import {
 
 import type {
   CookieOptions,
+   Request,
   Response,
 } from 'express';
 
@@ -108,6 +109,34 @@ export class AuthCookieService {
       },
     );
   }
+getAccessToken(
+  request: Request,
+): string | undefined {
+  return this.getCookie(
+    request,
+    this.names.access,
+  );
+}
+
+getRefreshToken(
+  request: Request,
+): string | undefined {
+  return this.getCookie(
+    request,
+    this.names.refresh,
+  );
+}
+
+getCsrfToken(
+  request: Request,
+): string | undefined {
+  return this.getCookie(
+    request,
+    this.names.csrf,
+  );
+}
+
+ 
 
   clearAuthCookies(
     response: Response,
@@ -127,7 +156,31 @@ export class AuthCookieService {
       );
     }
   }
+private getCookie(
+  request: Request,
+  name: string,
+): string | undefined {
+  const cookies =
+    request.cookies as
+      Record<
+        string,
+        unknown
+      > | undefined;
 
+  const value =
+    cookies?.[name];
+
+  if (
+    typeof value !==
+      'string' ||
+    value.length ===
+      0
+  ) {
+    return undefined;
+  }
+
+  return value;
+}
   private baseOptions(
     httpOnly: boolean,
   ): CookieOptions {

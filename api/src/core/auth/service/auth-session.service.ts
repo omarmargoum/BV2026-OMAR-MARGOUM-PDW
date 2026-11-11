@@ -19,6 +19,7 @@ const SESSION_DURATION_DAYS = 30;
 export type CreateSessionOptions = {
   ipAddress?: string | null;
   userAgent?: string | null;
+  csrfTokenHash?: string;
 };
 
 @Injectable()
@@ -33,7 +34,7 @@ export class AuthSessionService {
 
   async createSession(
     accountId: string,
-    options: CreateSessionOptions = {},
+    options: CreateSessionOptions,
   ): Promise<AuthSessionEntity> {
     const now = new Date();
 
@@ -56,6 +57,10 @@ export class AuthSessionService {
           options.ipAddress ?? null,
         userAgent:
           options.userAgent ?? null,
+        csrfTokenHash:
+          options.csrfTokenHash,  
+          accessVersion:
+            1,
       });
 
     return this.sessionRepository.save(

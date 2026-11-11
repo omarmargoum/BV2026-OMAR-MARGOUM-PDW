@@ -24,10 +24,10 @@ export class PasswordCredentialService {
     @InjectRepository(
       PasswordCredentialEntity,
     )
-    private readonly credentialRepository:
+    private readonly passwordCredentialRepository:
       Repository<PasswordCredentialEntity>,
 
-    private readonly passwordHashingService:
+    private readonly passwordHasherService:
       PasswordHasherService,
   ) {}
 
@@ -36,53 +36,87 @@ export class PasswordCredentialService {
     plainPassword: string,
   ): Promise<PasswordCredentialEntity> {
     const passwordHash =
-      await this.passwordHashingService
+      await this.passwordHasherService
         .hashPassword(plainPassword);
 
     const credential =
-      this.credentialRepository.create({
+      this.passwordCredentialRepository.create({
         accountId,
         passwordHash,
         passwordChangedAt:
           new Date(),
       });
 
-    return this.credentialRepository.save(
+    return this.passwordCredentialRepository.save(
       credential,
     );
   }
 
-  async verifyPassword(
-    accountId: string,
-    candidatePassword: string,
-  ): Promise<boolean> {
-    const credential =
-      await this.findWithPasswordHash(
-        accountId,
+ async verifyPassword(
+  accountId: string,
+  password: string,
+): Promise<boolean> {
+  const credential =
+    await this
+      .passwordCredentialRepository
+      .createQueryBuilder(
+        'credential',
+      )
+      .addSelect(
+        'credential.passwordHash',
+      )
+      .where(
+        'credential.accountId = :accountId',
+        {
+          accountId,
+        },
+      )
+      .getOne();
+
+  if (!credential) {
+    return false;
+  }
+
+  const passwordIsValid =
+    await this
+      .passwordHasherService
+      .verifyPassword(
+        credential.passwordHash,
+        password,
       );
 
-    if (!credential) {
-      return false;
-    }
+  if (!passwordIsValid) {
+    return false;
+  }
 
-    const isValid =
-      await this.passwordHashingService
-        .verifyPassword(
-          credential.passwordHash,
-          candidatePassword,
+  const hashMustBeRecalculated =
+    this.passwordHasherService
+      .needsRehash(
+        credential.passwordHash,
+      );
+
+  if (
+    hashMustBeRecalculated
+  ) {
+    credential.passwordHash =
+      await this
+        .passwordHasherService
+        .hashPassword(
+          password,
         );
 
-    if (!isValid) {
-      return false;
-    }
+    credential.passwordChangedAt =
+      new Date();
 
-    await this.rehashIfNecessary(
-      credential,
-      candidatePassword,
-    );
-
-    return true;
+    await this
+      .passwordCredentialRepository
+      .save(
+        credential,
+      );
   }
+
+  return true;
+}
 
   async changePassword(
     accountId: string,
@@ -98,7 +132,7 @@ export class PasswordCredentialService {
     }
 
     credential.passwordHash =
-      await this.passwordHashingService
+      await this.passwordHasherService
         .hashPassword(
           newPlainPassword,
         );
@@ -106,7 +140,7 @@ export class PasswordCredentialService {
     credential.passwordChangedAt =
       new Date();
 
-    await this.credentialRepository.save(
+    await this.passwordCredentialRepository.save(
       credential,
     );
   }
@@ -114,7 +148,7 @@ export class PasswordCredentialService {
   async existsForAccount(
     accountId: string,
   ): Promise<boolean> {
-    return this.credentialRepository.exists({
+    return this.passwordCredentialRepository.exists({
       where: {
         accountId,
       },
@@ -126,7 +160,7 @@ export class PasswordCredentialService {
   ): Promise<
     PasswordCredentialEntity | null
   > {
-    return this.credentialRepository
+    return this.passwordCredentialRepository
       .createQueryBuilder(
         'credential',
       )
@@ -148,7 +182,7 @@ export class PasswordCredentialService {
     plainPassword: string,
   ): Promise<void> {
     const mustRehash =
-      this.passwordHashingService
+      this.passwordHasherService
         .needsRehash(
           credential.passwordHash,
         );
@@ -158,7 +192,7 @@ export class PasswordCredentialService {
     }
 
     credential.passwordHash =
-      await this.passwordHashingService
+      await this.passwordHasherService
         .hashPassword(
           plainPassword,
         );
@@ -166,7 +200,7 @@ export class PasswordCredentialService {
     credential.passwordChangedAt =
       new Date();
 
-    await this.credentialRepository.save(
+    await this.passwordCredentialRepository.save(
       credential,
     );
   }

@@ -9,6 +9,7 @@ import {
 import {
   createHmac,
   randomBytes,
+  randomUUID,
 } from 'node:crypto';
 
 import {
@@ -18,9 +19,12 @@ import {
 export type AccessTokenPayload = {
   sub: string;
   sid: string;
+  jti: string;
+  ver: number;
 };
 
 export type GeneratedTokenPair = {
+  tokenId: string;
   accessToken: string;
   accessTokenExpiresInSeconds: number;
 
@@ -40,18 +44,23 @@ export class TokenCryptoService {
   ) {}
 
   async generateTokenPair(
+  
     accountId: string,
     sessionId: string,
+    accessVersion: number,
   ): Promise<GeneratedTokenPair> {
     const accessTokenExpiresInSeconds =
       this.envService
         .authAccessTokenExpiresInSeconds;
-
+    const tokenId = randomUUID();  
     const accessToken =
       await this.jwtService.signAsync(
         {
           sub: accountId,
           sid: sessionId,
+          jti: tokenId,
+         
+          ver: accessVersion,
         } satisfies AccessTokenPayload,
         {
           secret:
@@ -75,6 +84,7 @@ export class TokenCryptoService {
       this.calculateRefreshTokenExpiration();
 
     return {
+      tokenId,
       accessToken,
       accessTokenExpiresInSeconds,
       refreshToken,
@@ -82,18 +92,37 @@ export class TokenCryptoService {
       refreshTokenExpiresAt,
     };
   }
-
-  hashRefreshToken(
-    refreshToken: string,
-  ): string {
-    return createHmac(
-      'sha256',
-      this.envService
-        .authRefreshTokenSecret,
+generateCsrfToken():
+  string {
+  return randomBytes(
+    32,
+  ).toString(
+    'base64url',
+  );
+}
+  fingerprint(
+  value: string,
+): string {
+  return createHmac(
+    'sha256',
+    this.envService
+      .authRefreshTokenSecret,
+  )
+    .update(
+      value,
     )
-      .update(refreshToken)
-      .digest('hex');
-  }
+    .digest(
+      'hex',
+    );
+}
+
+hashRefreshToken(
+  refreshToken: string,
+): string {
+  return this.fingerprint(
+    refreshToken,
+  );
+}
 
   async verifyAccessToken(
     accessToken: string,

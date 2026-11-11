@@ -3,9 +3,6 @@ import {
 } from '@nestjs/common';
 
 import {
-  AccountModule,
-} from '../core/index.js';
-import {
   AppConfigModule,
 } from '../common/config/index.js';
 import {
@@ -21,7 +18,8 @@ import {
   LoggingModule,
 } from '../common/logging/index.js';
 import {
-  AuthenticationModule,
+  AccountModule,
+  AuthModule,
   HealthModule,
 } from '../core/index.js';
 @Module({
@@ -29,7 +27,7 @@ import {
     AppConfigModule,
     LoggingModule,
     DatabaseModule,
-    AuthenticationModule,
+    AuthModule,
     HealthModule,
     
     AccountModule,

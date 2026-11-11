@@ -114,6 +114,8 @@ export class AccessAuthGuard
 
         sessionId:
           payload.sid,
+        tokenId:
+          payload.jti,
       };
 
       return true;

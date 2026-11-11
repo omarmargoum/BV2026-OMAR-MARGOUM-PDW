@@ -1,4 +1,5 @@
-﻿export * from './auth-identifier.service.js';
+﻿export * from './auth-cookie.service.js';
+export * from './auth-identifier.service.js';
 export * from './auth.service.js'
 export * from './auth-session.service.js';
 export * from './csrf.service.js';

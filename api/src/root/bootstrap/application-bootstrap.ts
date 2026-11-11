@@ -6,10 +6,10 @@ import {
 import type {
   ValidationError,
 } from 'class-validator';
-
 import {
   Logger,
 } from 'nestjs-pino';
+import cookieParser from 'cookie-parser';
 
 import {
   ApiInterceptor,
@@ -21,6 +21,9 @@ import {
 export const configureApplication = (
   app: INestApplication,
 ): void => {
+  app.use(
+    cookieParser()
+  );
   const logger = app.get(Logger);
 
   const exceptionFilter =

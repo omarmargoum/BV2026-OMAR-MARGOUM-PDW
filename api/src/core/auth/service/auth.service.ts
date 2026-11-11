@@ -39,7 +39,9 @@ import {
   RefreshResponseDto,
   RegisterRequestDto,
 } from '../data/index.js';
-
+import type {
+  AuthenticatedSession,
+} from '../data/model/auth-context.js';
 import {
   AuthIdentifierService,
 } from './auth-identifier.service.js';
@@ -48,6 +50,11 @@ import {
   AuthSessionService,
   type CreateSessionOptions,
 } from './auth-session.service.js';
+type LoginSessionOptions =
+  Omit<
+    CreateSessionOptions,
+    'csrfTokenHash'
+  >;
 import {
   normalizeEmail,
 } from '../utils/normalize-email.util.js';
@@ -269,8 +276,8 @@ export class AuthService {
       LoginRequestDto,
 
     sessionOptions:
-      CreateSessionOptions = {},
-  ): Promise<LoginResponseDto> {
+      LoginSessionOptions = {},
+  ): Promise<AuthenticatedSession> {
     const identifier =
       await this.authIdentifierService
         .findEmailIdentifier(
@@ -312,19 +319,33 @@ export class AuthService {
       throw this
         .createInvalidCredentialsException();
     }
+const csrfToken =
+  this.tokenCryptoService
+    .generateCsrfToken();
 
-    const session =
-      await this.authSessionService
-        .createSession(
-          account.id,
-          sessionOptions,
-        );
+const csrfTokenHash =
+  this.tokenCryptoService
+    .fingerprint(
+      csrfToken,
+    );
 
+const session =
+  await this.authSessionService
+    .createSession(
+      account.id,
+      {
+        ...sessionOptions,
+
+        csrfTokenHash,
+      },
+    );
+   
     const tokenPair =
       await this.tokenCryptoService
         .generateTokenPair(
           account.id,
           session.id,
+          session.accessVersion,
         );
 
     await this.refreshTokenService
@@ -335,39 +356,28 @@ export class AuthService {
           .refreshTokenExpiresAt,
       );
 
-    const response =
-      new LoginResponseDto();
+    return {
+  accountId:
+    account.id,
 
-    response.account =
-      AccountResponseDto
-        .fromEntity(
-          account,
-        );
+  sessionId:
+    session.id,
 
-    response.sessionId =
-      session.id;
+  tokenId:
+    tokenPair.tokenId,
 
-    response.sessionExpiresAt =
-      session.expiresAt
-        .toISOString();
+  accessToken:
+    tokenPair.accessToken,
 
-    response.accessToken =
-      tokenPair.accessToken;
+  refreshToken:
+    tokenPair.refreshToken,
 
-    response
-      .accessTokenExpiresInSeconds =
-      tokenPair
-        .accessTokenExpiresInSeconds;
+  csrfToken,
 
-    response.refreshToken =
-      tokenPair.refreshToken;
-
-    response.refreshTokenExpiresAt =
-      tokenPair
-        .refreshTokenExpiresAt
-        .toISOString();
-
-    return response;
+  refreshExpiresAt:
+    tokenPair
+      .refreshTokenExpiresAt,
+};
   }
 
   async refresh(
@@ -493,6 +503,7 @@ export class AuthService {
                 .generateTokenPair(
                   session.accountId,
                   session.id,
+                  session.accessVersion,
                 );
 
             const replacementToken =
