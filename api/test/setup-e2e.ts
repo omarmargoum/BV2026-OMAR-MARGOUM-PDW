@@ -1,11 +1,11 @@
 import {
-  config,
-} from 'dotenv';
+   config 
+  } from 'dotenv';
+import * as fs from 'fs';
+import * as path from 'path';
 
-config({
-  path: '.env.test',
-  override: true,
-});
-
-process.env.NODE_ENV = 'test';
-process.env.DB_SYNC = 'false';
+// Charge .env.test s'il existe, sinon ignore l'erreur
+const envTestPath = path.resolve(process.cwd(), '.env.test');
+if (fs.existsSync(envTestPath)) {
+  config({ path: envTestPath, override: true });
+}

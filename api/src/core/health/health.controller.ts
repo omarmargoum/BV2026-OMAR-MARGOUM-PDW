@@ -16,7 +16,7 @@ import {
 } from './health.service.js';
 import {
   Public,
-}from '../authentication/decorator/index.js'
+}from '../auth/decorator/index.js'
 @SkipApiTransform()
 @Public()  
 @ApiTags('Health')

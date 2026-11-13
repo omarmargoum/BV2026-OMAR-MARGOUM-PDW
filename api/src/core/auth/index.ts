@@ -1,5 +1,4 @@
 export * from './auth.module.js';
-
 export * from '../account/index.js';
 export * from './data/index.js';
 export * from './decorator/index.js';

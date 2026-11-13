@@ -92,7 +92,7 @@ describe(
         expect(
           response.body.code,
         ).toBe(
-          'api.auth.access.unauthorized',
+          'api.auth.unauthorized',
         );
 
         expect(
