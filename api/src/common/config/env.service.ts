@@ -91,7 +91,50 @@ export class EnvService {
 
     return duration;
   }
-  
+  get jwtActiveKid():
+  string {
+  return this.configService
+    .getOrThrow<string>(
+      ConfigKey
+        .AUTH_JWT_ACTIVE_KID,
+    );
+}
+
+get jwtPrivateKeyBase64():
+  string {
+  return this.configService
+    .getOrThrow<string>(
+      ConfigKey
+        .AUTH_JWT_PRIVATE_KEY_BASE64,
+    );
+}
+
+get jwtPublicKeysJson():
+  string {
+  return this.configService
+    .getOrThrow<string>(
+      ConfigKey
+        .AUTH_JWT_PUBLIC_KEYS_JSON,
+    );
+}
+
+get accessTokenTtlSeconds():
+  number {
+  return this.configService
+    .getOrThrow<number>(
+      ConfigKey
+        .AUTH_ACCESS_TOKEN_TTL_SECONDS,
+    );
+}
+
+get refreshTokenPepper():
+  string {
+  return this.configService
+    .getOrThrow<string>(
+      ConfigKey
+        .AUTH_REFRESH_TOKEN_PEPPER,
+    );
+}
   get appMode(): AppMode {
     return this.configService.get<AppMode>(
       ConfigKey.APP_MODE,

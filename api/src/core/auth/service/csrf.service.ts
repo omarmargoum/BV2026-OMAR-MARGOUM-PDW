@@ -3,7 +3,6 @@ import {
 } from '@nestjs/common';
 
 import {
-  createHash,
   timingSafeEqual,
 } from 'node:crypto';
 
@@ -19,8 +18,17 @@ import {
   AuthSessionEntity,
 } from '../data/entity/auth-session.entity.js';
 
+import {
+  TokenCryptoService,
+} from './token-crypto.service.js';
+
 @Injectable()
 export class CsrfService {
+  constructor(
+    private readonly tokenCrypto:
+      TokenCryptoService,
+  ) {}
+
   assertValid(
     request: Request,
     session: AuthSessionEntity,
@@ -42,29 +50,16 @@ export class CsrfService {
 
     const actual =
       Buffer.from(
-        createHash('sha256')
-          .update(token)
-          .digest(),
+        this.tokenCrypto
+          .fingerprint(
+            token,
+          ),
+        'hex',
       );
-
-    const csrfTokenHash: unknown =
-      Reflect.get(
-        session,
-        'csrfTokenHash',
-      );
-
-    if (
-      typeof csrfTokenHash !== 'string'
-    ) {
-      throw new AuthSecurityException(
-        'api.security.csrf-invalid',
-        403,
-      );
-    }
 
     const expected =
       Buffer.from(
-        csrfTokenHash,
+        session.csrfTokenHash,
         'hex',
       );
 

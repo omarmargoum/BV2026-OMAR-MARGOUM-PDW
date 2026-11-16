@@ -65,6 +65,51 @@ const corsOriginsSchema =
     );
 export const environmentValidation =
   z.object({
+    AUTH_JWT_ACTIVE_KID:
+  z
+    .string()
+    .trim()
+    .min(
+      1,
+      'La variable AUTH_JWT_ACTIVE_KID est obligatoire.',
+    ),
+
+AUTH_JWT_PRIVATE_KEY_BASE64:
+  z
+    .string()
+    .trim()
+    .min(
+      1,
+      'La variable AUTH_JWT_PRIVATE_KEY_BASE64 est obligatoire.',
+    ),
+
+AUTH_JWT_PUBLIC_KEYS_JSON:
+  z
+    .string()
+    .trim()
+    .min(
+      1,
+      'La variable AUTH_JWT_PUBLIC_KEYS_JSON est obligatoire.',
+    ),
+
+AUTH_ACCESS_TOKEN_TTL_SECONDS:
+  z
+    .coerce
+    .number()
+    .int()
+    .positive()
+    .default(
+      600,
+    ),
+
+AUTH_REFRESH_TOKEN_PEPPER:
+  z
+    .string()
+    .trim()
+    .min(
+      32,
+      'AUTH_REFRESH_TOKEN_PEPPER doit contenir au moins 32 caractères.',
+    ),
     APP_CORS_ORIGIN:
     corsOriginsSchema,
     NODE_ENV:
